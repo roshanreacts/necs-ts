@@ -9,7 +9,7 @@
     "lint": "next lint",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "test:components": "cypress run --headed=false"
+    "test:components": "cypress run"
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",
@@ -20,7 +20,6 @@
     "react-dom": "^18"
   },
   "devDependencies": {
-    "@cypress/react": "^8.0.0",
     "@storybook/addon-essentials": "^7.6.6",
     "@storybook/addon-interactions": "^7.6.6",
     "@storybook/addon-links": "^7.6.6",
@@ -34,7 +33,6 @@
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
-    "cypress": "^13.6.1",
     "eslint": "^8",
     "eslint-config-next": "14.0.4",
     "eslint-plugin-storybook": "^0.6.15",
