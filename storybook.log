@@ -1,9 +1,0 @@
-npm ERR! code 1
-npm ERR! path /Users/roshankumar.gujarathi/roshanreacts/playground/necs-ts/node_modules/sharp
-npm ERR! command failed
-npm ERR! command sh -c (node install/libvips && node install/dll-copy && prebuild-install) || (node install/can-compile && node-gyp rebuild && node install/dll-copy)
-npm ERR! sharp: Downloading https://github.com/lovell/sharp-libvips/releases/download/v8.14.5/libvips-8.14.5-darwin-arm64v8.tar.br
-npm ERR! sharp: Please see https://sharp.pixelplumbing.com/install for required dependencies
-npm ERR! sharp: Installation error: self-signed certificate in certificate chain
-
-npm ERR! A complete log of this run can be found in: /Users/roshankumar.gujarathi/.npm/_logs/2023-12-20T10_12_59_794Z-debug-0.log
