@@ -4,6 +4,9 @@ FROM amd64/node:20-alpine
 # Set the working directory in the Docker container
 WORKDIR /usr/src/app
 
+RUN apk update && apk upgrade && \
+    apk add --no-cache bash git openssh
+
 # Copy package.json and package-lock.json (or yarn.lock if you are using Yarn) into the Docker container
 # COPY package.json yarn.lock ./
 

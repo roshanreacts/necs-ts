@@ -1,6 +1,6 @@
 import { mount } from "@cypress/react";
 import { composeStories } from "@storybook/testing-react";
-import * as stories from "../../src/stories/Button.stories";
+import * as stories from "../../src/components/Button.stories";
 
 describe("Button component", () => {
   const { Primary } = composeStories(stories);
