@@ -1,9 +1,10 @@
 import type { Preview } from "@storybook/react";
-
+import { initialize, mswLoader } from 'msw-storybook-addon';
 import { withThemeFromJSXProvider } from '@storybook/addon-themes';
-import { Global, css, ThemeProvider } from '@emotion/react';
-
+import { ThemeProvider } from '@emotion/react';
 import { lightTheme, darkTheme } from '../src/utils/theme';
+// Initialize MSW
+initialize();
 
 export const decorators = [
   withThemeFromJSXProvider({
@@ -25,6 +26,7 @@ const preview: Preview = {
       },
     },
   },
+  loaders: [mswLoader],
 };
 
 export default preview;

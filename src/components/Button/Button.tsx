@@ -1,8 +1,7 @@
 import styled from '@emotion/styled';
-import { Theme } from '@emotion/react';
 
 export type ButtonProps = {
-    theme: Theme;
+    color?: string;
   };
 
 const Button = styled.button<ButtonProps>`
