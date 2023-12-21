@@ -1,6 +1,6 @@
 import { describe, test, expect, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
-import { composeStories } from '@storybook/testing-react'
+import { composeStories } from '@storybook/react'
 import * as stories from './Button.stories'
 
 const { Primary } = composeStories(stories);
