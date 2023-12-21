@@ -45,9 +45,7 @@ export const MockedError = {
         msw: {
             handlers: [
                 http.get('https://swapi.dev/api/films/', () => {
-                    return HttpResponse.json({
-                        error: films,
-                    }, { status: 500 });
+                    return HttpResponse.error();
                 }),
             ],
         },

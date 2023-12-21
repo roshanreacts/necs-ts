@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import Button from '../components/Button/Button';
+import Button from '@/components/Button/Button';
 
 function useFetchFilms() {
   const [status, setStatus] = useState('idle');
