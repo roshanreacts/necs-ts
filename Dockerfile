@@ -1,11 +1,11 @@
 # Use an official Node.js runtime as the base image
-FROM amd64/node:20-alpine
-
+FROM oven/bun:latest
 # Set the working directory in the Docker container
 WORKDIR /usr/src/app
 
-RUN apk update && apk upgrade && \
-    apk add --no-cache bash git openssh
+# RUN apk update && apk upgrade && \
+#     apk add --no-cache bash git openssh
+# RUN yarn set version 3.6.4
 
 # Copy package.json and package-lock.json (or yarn.lock if you are using Yarn) into the Docker container
 # COPY package.json yarn.lock ./
@@ -14,7 +14,8 @@ RUN apk update && apk upgrade && \
 COPY . .
 
 # Install the project dependencies inside the Docker container
-RUN yarn install
+RUN bun install vips
+RUN bun install
 
 
 # Build the Next.js app
@@ -24,4 +25,4 @@ RUN yarn install
 EXPOSE 3000 6006
 
 # Start the Next.js app and Storybook when the Docker container is run
-CMD ["sh", "-c", "yarn dev & yarn storybook"]
+CMD ["sh", "-c", "bun run dev & bun run storybook"]

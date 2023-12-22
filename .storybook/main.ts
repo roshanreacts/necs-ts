@@ -20,7 +20,7 @@ const config: StorybookConfig = {
   webpackFinal: async (config, { configType }) => {
     if (config.resolve) {
       config.resolve.alias = {
-        '@/': path.resolve(__dirname, '../src'),
+        '@': path.resolve(__dirname, '../src'),
         // Add more aliases as needed
       };
     }

@@ -10,7 +10,7 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "test": "vitest",
-    "vitest-preview": "vitest-preview"
+    "vtest": "vitest-preview"
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",
@@ -18,9 +18,12 @@
     "framer-motion": "^10.16.16",
     "next": "14.0.4",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "sharp": "^0.33.1",
+    "vips": "^1.0.0"
   },
   "devDependencies": {
+    "@babel/standalone": "^7.23.6",
     "@storybook/addon-essentials": "^7.6.6",
     "@storybook/addon-interactions": "^7.6.6",
     "@storybook/addon-links": "^7.6.6",
@@ -32,6 +35,7 @@
     "@storybook/test": "^7.6.6",
     "@storybook/testing-react": "^2.0.1",
     "@testing-library/react": "^14.1.2",
+    "@types/babel__standalone": "^7.1.7",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
-import Button from '@/components/Button/Button';
+import Button from "@/components/Button/Button";
 
 function useFetchFilms() {
-  const [status, setStatus] = useState('idle');
+  const [status, setStatus] = useState("idle");
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    setStatus('loading');
+    setStatus("loading");
 
-    fetch('https://swapi.dev/api/films/')
+    fetch("https://swapi.dev/api/films/")
       .then((res) => {
         if (!res.ok) {
           throw new Error(res.statusText);
@@ -18,11 +18,11 @@ function useFetchFilms() {
       })
       .then((res) => res.json())
       .then((data) => {
-        setStatus('success');
+        setStatus("success");
         setData(data.results);
       })
       .catch(() => {
-        setStatus('error');
+        setStatus("error");
       });
   }, []);
 
@@ -35,22 +35,28 @@ function useFetchFilms() {
 export function App() {
   const { status, data: films } = useFetchFilms();
 
-  if (status === 'loading') {
+  if (status === "loading") {
     return <p>Fetching Star Wars data...</p>;
   }
 
-  if (status === 'error') {
+  if (status === "error") {
     return <p>Could not fetch Star Wars data</p>;
   }
 
   return (
     <div className="films-grid">
-      {films.map((film:{episode_id: number, title: string,opening_crawl:string}) => (
-        <article className="film-card">
-        <h4 className="film-title">{film.title}</h4>
-        <p>{film.opening_crawl}</p>
-      </article>
-      ))}
+      {films.map(
+        (film: {
+          episode_id: number;
+          title: string;
+          opening_crawl: string;
+        }) => (
+          <article className="film-card">
+            <h4 className="film-title">{film.title}</h4>
+            <Button>{film.opening_crawl}</Button>
+          </article>
+        )
+      )}
     </div>
   );
 }

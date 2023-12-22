@@ -1,13 +1,13 @@
-import styled from '@emotion/styled';
+import styled from "@emotion/styled";
 
 export type ButtonProps = {
-    color?: string;
-  };
+  color?: string;
+};
 
 const Button = styled.button<ButtonProps>`
   padding: 10px 20px;
   font-size: 16px;
-  background-color: ${props => props.theme.colors.primary};
+  background-color: ${(props) => props.theme.colors?.primary};
   color: white;
   border: none;
   border-radius: 5px;
