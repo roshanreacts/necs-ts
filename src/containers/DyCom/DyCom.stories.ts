@@ -10,7 +10,10 @@ export const DyComButton = {
     msw: {
       handlers: [
         http.get('https://api.example.com/component-url', () => {
-          return HttpResponse.text(`function Button({onClick}) {
+          return HttpResponse.text(`
+                      import _ from "lodash";
+                      // ---Component---
+          function Button() {
                         return (
                           <button
                             style={{
@@ -22,9 +25,8 @@ export const DyComButton = {
                               borderRadius: "5px",
                               cursor: "pointer",
                             }}
-                            onClick={onClick}
                           >
-                            Click me
+                            {_.startCase("Click me")}
                           </button>
                         );
                       }`);

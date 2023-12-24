@@ -9,8 +9,10 @@ describe("Button", () => {
   test("renders with primary", () => {
     render(<Primary />);
     expect(screen.getByText("Click me!")).toBeInTheDocument();
+  });
 
-    // Fire click event on the button
-    const button = screen.getByText("Click me!");
+  test("renders with different text", () => {
+    render(<Primary>Submit</Primary>);
+    expect(screen.getByText("Submit")).toBeInTheDocument();
   });
 });
