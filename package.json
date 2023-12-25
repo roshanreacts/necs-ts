@@ -24,7 +24,6 @@
     "vips": "^1.0.0"
   },
   "devDependencies": {
-    "@babel/preset-env": "^7.23.6",
     "@babel/standalone": "^7.23.6",
     "@storybook/addon-essentials": "^7.6.6",
     "@storybook/addon-interactions": "^7.6.6",
