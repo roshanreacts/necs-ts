@@ -72,7 +72,9 @@ function App({ onClick }: { onClick: () => void }) {
   const MyComponent = nodeModules ? createComponentFromJSX(nodeModules) : null;
   return (
     <div className="App">
-      <header className="App-header">{MyComponent && <MyComponent />}</header>
+      <header className="App-header">
+        {MyComponent && <MyComponent onClick={onClick} />}
+      </header>
     </div>
   );
 }

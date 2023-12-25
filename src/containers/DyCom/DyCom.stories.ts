@@ -2,7 +2,7 @@ import { http, HttpResponse } from 'msw';
 import App from './DyCom';
 
 export default {
-  title: 'Demos/DyCom',
+  title: 'Container/DyCom',
   component: App,
 };
 export const DyComButton = {
@@ -13,7 +13,7 @@ export const DyComButton = {
           return HttpResponse.text(`
                       import _ from "lodash";
                       // ---Component---
-          function Button() {
+          function Button({onClick}) {
                         return (
                           <button
                             style={{
@@ -25,6 +25,7 @@ export const DyComButton = {
                               borderRadius: "5px",
                               cursor: "pointer",
                             }}
+                            onClick={onClick}
                           >
                             {_.startCase("Click me")}
                           </button>
@@ -34,4 +35,7 @@ export const DyComButton = {
       ],
     },
   },
+  args: {
+    onClick: () => console.log("clicked")
+  }
 };
