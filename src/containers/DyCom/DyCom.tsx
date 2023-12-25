@@ -15,7 +15,7 @@ function createComponentFromJSX({
   const code = result ? result.code : null;
   const componentFunction = Function.prototype.apply.apply(Function, [
     null,
-    ["React", "return " + code],
+    ["React", "_", "return " + code],
   ]);
 
   // Call the function with React and the imported modules as arguments to get the component

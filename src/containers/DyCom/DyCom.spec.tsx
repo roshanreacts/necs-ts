@@ -13,9 +13,11 @@ describe("Profile", () => {
   test("renders film cards for each film", async () => {
     server.use(...DyComButton.parameters.msw.handlers);
     const mockFn = vi.fn();
-    render(<DyComButton />);
-    expect(screen.getByText(/Loading.../i)).toBeInTheDocument();
+    render(<DyComButton onClick={mockFn} />);
     await screen.findAllByRole("button");
     expect(screen.getByRole("button")).toBeInTheDocument();
+    expect(screen.getByRole("button")).toHaveTextContent("Click Me"); //Text content tobe updated with lodash startCase
+    fireEvent.click(screen.getByRole("button"));
+    expect(mockFn).toHaveBeenCalled();
   });
 });
