@@ -11,7 +11,6 @@ function createComponentFromJSX({
 }): React.FC {
   // Transpile the JSX string to JavaScript using Babel
   const bodyCode = jsxString?.split("// ---Component---")[1].trim();
-  console.log("bodyCode", bodyCode);
   const result = Babel.transform(bodyCode, { presets: ["react"] });
   const code = result ? result.code : null;
   const componentFunction = Function.prototype.apply.apply(Function, [
