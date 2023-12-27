@@ -1,5 +1,5 @@
 # Use an official Node.js runtime as the base image
-FROM oven/bun:latest
+FROM --platform=amd64 oven/bun:latest
 # Set the working directory in the Docker container
 WORKDIR /usr/src/app
 
@@ -14,15 +14,14 @@ WORKDIR /usr/src/app
 COPY . .
 
 # Install the project dependencies inside the Docker container
-RUN bun install vips
-RUN bun install
+# RUN bun install
 
 
 # Build the Next.js app
-# RUN yarn build
+# RUN bun run build
 
 # Expose ports 3000 and 6006 for Next.js and Storybook respectively
 EXPOSE 3000 6006
 
 # Start the Next.js app and Storybook when the Docker container is run
-CMD ["sh", "-c", "bun run dev & bun run storybook"]
+CMD ["sh", "-c", "bun run start"]

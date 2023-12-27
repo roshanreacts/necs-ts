@@ -51,7 +51,7 @@ export function App() {
           title: string;
           opening_crawl: string;
         }) => (
-          <article className="film-card">
+          <article key={film.episode_id} className="film-card">
             <h4 className="film-title">{film.title}</h4>
             <Button>{film.opening_crawl}</Button>
           </article>

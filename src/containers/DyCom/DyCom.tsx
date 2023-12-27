@@ -2,13 +2,17 @@ import React, { useState, useEffect } from "react";
 import _, { map, set } from "lodash";
 import * as Babel from "@babel/standalone";
 
+type DyComProps = {
+  onClick: () => void;
+};
+
 function createComponentFromJSX({
   jsxString,
   modules,
 }: {
   jsxString: string;
   modules: Array<any>;
-}): React.FC {
+}): React.FC<DyComProps> {
   // Transpile the JSX string to JavaScript using Babel
   const bodyCode = jsxString?.split("// ---Component---")[1].trim();
   const result = Babel.transform(bodyCode, { presets: ["react"] });
