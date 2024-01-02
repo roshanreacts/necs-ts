@@ -64,6 +64,12 @@ export const lightTheme = {
   colors: {
     primary: 'hotpink',
     text: '#000',
+    input: {
+      border: '#0056b3',
+      background: '#0056b3',
+      placeholder: '#A9A9A9',
+      label: '#000'
+    }
   }
 }
 
@@ -76,68 +82,74 @@ export const darkTheme = {
 declare module '@emotion/react' {
   export interface Theme {
     fontFace: {
-      fontFamily: string
-      src: string
-    }
-    colors: {
-      primary: string
-      text: string
-    }
+      fontFamily: string;
+      src: string;
+    };
     typography: {
       h1: {
-        fontSize: string
-        fontWeight: number
-      }
+        fontSize: string;
+        fontWeight: number;
+      };
       h2: {
-        fontSize: string
-        fontWeight: number
-      }
+        fontSize: string;
+        fontWeight: number;
+      };
       h3: {
-        fontSize: string
-        fontWeight: number
-      }
+        fontSize: string;
+        fontWeight: number;
+      };
       h4: {
-        fontSize: string
-        fontWeight: number
-      }
+        fontSize: string;
+        fontWeight: number;
+      };
       h5: {
-        fontSize: string
-        fontWeight: number
-      }
+        fontSize: string;
+        fontWeight: number;
+      };
       h6: {
-        fontSize: string
-        fontWeight: number
-      }
+        fontSize: string;
+        fontWeight: number;
+      };
       subtitle1: {
-        fontSize: string
-        fontWeight: number
-      }
+        fontSize: string;
+        fontWeight: number;
+      };
       subtitle2: {
-        fontSize: string
-        fontWeight: number
-      }
+        fontSize: string;
+        fontWeight: number;
+      };
       body1: {
-        fontSize: string
-        fontWeight: number
-      }
+        fontSize: string;
+        fontWeight: number;
+      };
       body2: {
-        fontSize: string
-        fontWeight: number
-      }
+        fontSize: string;
+        fontWeight: number;
+      };
       button: {
-        fontSize: string
-        fontWeight: number
-        textTransform: string
-      }
+        fontSize: string;
+        fontWeight: number;
+        textTransform: string;
+      };
       caption: {
-        fontSize: string
-        fontWeight: number
-      }
+        fontSize: string;
+        fontWeight: number;
+      };
       overline: {
-        fontSize: string
-        fontWeight: number
-        textTransform: string
-      }
-    }
+        fontSize: string;
+        fontWeight: number;
+        textTransform: string;
+      };
+    };
+    colors: {
+      primary: string;
+      text: string;
+      input: {
+        border: string;
+        background: string;
+        placeholder: string;
+        label: string;
+      };
+    };
   }
 }
