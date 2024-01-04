@@ -22,6 +22,8 @@
     "next": "14.0.4",
     "react": "^18",
     "react-dom": "^18",
+    "react-multi-select-component": "^4.3.4",
+    "react-select": "^5.8.0",
     "sharp": "^0.33.1",
     "vips": "^1.0.0"
   },
