@@ -1,4 +1,5 @@
 // Checkbox.tsx
+"use client"
 import React from "react";
 import styled from "@emotion/styled";
 
@@ -21,7 +22,7 @@ const CheckboxInput = styled.input`
 
 const CheckboxLabel = styled.label``;
 
-const Checkbox: React.FC<CheckboxProps> = ({ label,value, checked, onChange }) => {
+const Checkbox: React.FC<CheckboxProps> = ({value, checked, onChange }) => {
   return (
     <CheckboxWrapper>
       <CheckboxInput
@@ -30,7 +31,7 @@ const Checkbox: React.FC<CheckboxProps> = ({ label,value, checked, onChange }) =
         value={value}
         onChange={(event) => onChange(event.target.checked)}
       />
-      <CheckboxLabel>{label}</CheckboxLabel>
+      <CheckboxLabel>{value}</CheckboxLabel>
     </CheckboxWrapper>
   );
 };

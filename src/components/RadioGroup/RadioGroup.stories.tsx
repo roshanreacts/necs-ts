@@ -1,6 +1,6 @@
 // RadioGroup.stories.tsx
 import React from "react";
-import { Meta } from "@storybook/react";
+import { Meta, Story } from "@storybook/react";
 import RadioGroup, { RadioGroupProps } from "./RadioGroup";
 
 const meta: Meta = {
@@ -10,15 +10,13 @@ const meta: Meta = {
 
 export default meta;
 
-type StoryArgs = {
-  options: { label: string; value: string }[];
+type StoryArgs = RadioGroupProps & { options: string[] };
+
+const Template: Story<StoryArgs> = ({ options }) => <RadioGroup options={options} />;
+
+export const Example = Template.bind({});
+Example.args = {
+  options: ["Option 1", "Option 2", "Option 3"],
 };
 
-export const Example = ({ options }: StoryArgs) => <RadioGroup options={options} />;
-Example.args = {
-  options: [
-    { label: "Option 1", value: "option1" },
-    { label: "Option 2", value: "option2" },
-    { label: "Option 3", value: "option3" },
-  ],
-};
+Example.argTypes = {};

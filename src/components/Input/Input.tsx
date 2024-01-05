@@ -5,11 +5,12 @@ import { css } from "@emotion/css";
 import { useTheme, Theme } from "@emotion/react";
 type InputProps = {
   label: string;
+  [x:string]: any
 };
 
 const labelStyles = (theme: Theme) =>
   css({
-    color: theme.colors.input.label, // Use the theme object to access the primary color
+    color: theme?.colors?.input?.label ?? 'green', // Use the theme object to access the primary color
     marginBottom: 10,
   });
 
@@ -31,14 +32,20 @@ const InputField = styled.input`
   }
 `;
 
-const Input = ({ label }: InputProps) => {
-  const theme = useTheme();
+// const Input = ({ label, ...rest }: InputProps) => {
+//   const theme = useTheme();
+//   return (
+//     <InputWrapper>
+//       <Text className={labelStyles(theme)}>{label}</Text>
+//       <InputField {...rest} />
+//     </InputWrapper>
+//   );
+// };
+
+function Input({label, ...rest}: InputProps) {
   return (
-    <InputWrapper>
-      <Text className={labelStyles(theme)}>{label}</Text>
-      <InputField type="text" placeholder="New" />
-    </InputWrapper>
-  );
-};
+    <input type="text" {...rest} />
+  )
+}
 
 export default Input;

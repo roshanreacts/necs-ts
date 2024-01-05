@@ -22,13 +22,13 @@ const RadioInput = styled.input`
 `;
 
 const RadioLabel = styled.label<{ styles: string }>`
-  color: ${(props) => props.theme.colors.input.label};
+  color: ${(props) => props.theme.colors?.input?.label};
   ${(props) => props.styles}
 `;
 
 const radioStyles = (theme: Theme) =>
   css({
-    color: theme.colors.input.label,
+    color: theme?.colors?.input?.label,
   });
 
 const Radio: React.FC<RadioProps> = ({ label, value, checked, onChange }) => {

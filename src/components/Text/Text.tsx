@@ -10,10 +10,7 @@ export type TextProps = {
 };
 
 const Text = styled.p<TextProps>`
-  ${({ theme, variant }) =>
-    theme.typography[variant as keyof Theme["typography"]]};
-  color: ${({ color }) => color};
-  font-size: ${({ fontSize }) => fontSize};
+  color: green;
 `;
 
 export default Text;

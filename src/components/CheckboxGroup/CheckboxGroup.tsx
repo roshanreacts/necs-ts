@@ -1,9 +1,10 @@
 // CheckboxGroup.tsx
+"use client"
 import React, { useState } from "react";
 import Checkbox, { CheckboxProps } from '../Checkbox/Checkbox'
 
 export type CheckboxGroupProps = {
-  options: { label: string; value: string }[];
+  options: string[];
   onChange: (selectedValues: string[]) => void;
 };
 
@@ -21,13 +22,13 @@ const CheckboxGroup: React.FC<CheckboxGroupProps> = ({ options, onChange }) => {
 
   return (
     <div>
-      {options.map((option) => (
+      {options.map((value) => (
         <Checkbox
-          key={option.value}
-          label={option.label}
-          value={option.value}
-          checked={selectedValues.includes(option.value)}
-          onChange={() => handleCheckboxChange(option.value)}
+          key={value}
+          label={value}
+          value={value}
+          checked={selectedValues.includes(value)}
+          onChange={() => handleCheckboxChange(value)}
         />
       ))}
     </div>

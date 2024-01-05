@@ -1,29 +1,30 @@
 // RadioGroup.tsx
+"use client"
 import React, { useState } from "react";
 import Radio from "../Radio/Radio";
 
 export type RadioGroupProps = {
-  options: { label: string; value: string }[];
+  options: string[];
 };
 
 const RadioGroup: React.FC<RadioGroupProps> = ({ options }) => {
   const [selectedValue, setSelectedValue] = useState<string | null>(null);
 
   const handleChange = (value: string) => {
-    console.log("selected valuie",value);
+    console.log("selected value", value);
     setSelectedValue(value);
     // You can perform additional actions when a radio button is selected
   };
 
   return (
     <div>
-      {options.map((option) => (
+      {options.map((value) => (
         <Radio
-          key={option.value}
-          label={option.label}
-          value={option.value}
-          checked={option.value === selectedValue}
-          onChange={() => handleChange(option.value)}
+          key={value}
+          label={value}
+          value={value}
+          checked={value === selectedValue}
+          onChange={() => handleChange(value)}
         />
       ))}
     </div>

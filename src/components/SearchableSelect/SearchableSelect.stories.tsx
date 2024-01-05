@@ -1,7 +1,7 @@
 // SearchableSelect.stories.tsx
 import React from "react";
 import { Meta, Story } from "@storybook/react";
-import SearchableSelect, { SearchableSelectProps } from "./SearchableSelect";
+import SearchableSelect,{SearchableSelectProps} from "./SearchableSelect";
 
 const meta: Meta = {
   title: "Components/SearchableSelect",
@@ -10,14 +10,13 @@ const meta: Meta = {
 
 export default meta;
 
-const Template: Story<SearchableSelectProps> = (args) => <SearchableSelect {...args} />;
+type StoryArgs = SearchableSelectProps & { options: string[] };
+
+const Template: Story<StoryArgs> = ({ options }) => <SearchableSelect options={options} />;
 
 export const Example = Template.bind({});
 Example.args = {
-  options: [
-    { label: "test1", value: "test1" },
-    { label: "Option1", value: "option1" },
-    { label: "test2", value: "test2" },
-    { label: "Option2", value: "Option2" },
-  ],
+  options: ["Option 1", "Option 2", "Option 3"],
 };
+
+Example.argTypes = {};

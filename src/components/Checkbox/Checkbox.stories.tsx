@@ -23,9 +23,9 @@ export default meta;
 
 type StoryArgs = CheckboxProps & { isChecked: boolean }; // Use a different name for the prop
 
-const Template: Story<StoryArgs> = ({ label, value, isChecked, onChange }) => (
+const Template: Story<StoryArgs> = ({ value, isChecked, onChange }) => (
   <Checkbox
-    label={label}
+    label={value}
     value={value}
     checked={isChecked} // Use the new prop name
     onChange={() => {
@@ -36,7 +36,6 @@ const Template: Story<StoryArgs> = ({ label, value, isChecked, onChange }) => (
 
 export const Example = Template.bind({});
 Example.args = {
-  label: "Checkbox Label",
   value: "Example Value",
   isChecked: false, // Use the new prop name
 };

@@ -10,7 +10,7 @@ const meta: Meta = {
 
 export default meta;
 
-type StoryArgs = CheckboxGroupProps & { options: { label: string; value: string }[] };
+type StoryArgs = CheckboxGroupProps & { options: string[] };
 
 const Template: Story<StoryArgs> = ({ options, onChange }) => (
   <CheckboxGroup options={options} onChange={onChange} />
@@ -18,11 +18,7 @@ const Template: Story<StoryArgs> = ({ options, onChange }) => (
 
 export const Example = Template.bind({});
 Example.args = {
-  options: [
-    { label: "Option 1", value: "option1" },
-    { label: "Option 2", value: "option2" },
-    { label: "Option 3", value: "option3" },
-  ],
+  options: ["Option 1", "Option 2", "Option 3"],
   onChange: (selectedValues) => console.log("Selected values:", selectedValues),
 };
 

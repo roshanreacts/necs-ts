@@ -1,5 +1,6 @@
+// MultiSelectDropDown.stories.tsx
 import React from "react";
-import { Meta } from "@storybook/react";
+import { Meta, Story } from "@storybook/react";
 import MultiSelectDropDown from "./MultiSelectDropDown";
 
 const meta: Meta = {
@@ -9,16 +10,13 @@ const meta: Meta = {
 
 export default meta;
 
-type StoryArgs = {
-  options: { label: string; value: string }[];
+type StoryArgs = { options: string[] };
+
+const Template: Story<StoryArgs> = ({ options }) => <MultiSelectDropDown options={options} />;
+
+export const Example = Template.bind({});
+Example.args = {
+  options: ["Option 1", "Option 2", "Option 3"],
 };
 
-export const Example = ({ options }: StoryArgs) => <MultiSelectDropDown options={options} />;
-Example.args = {
-  options: [
-    { label: "test1", value: "test1" },
-    { label: "Option1", value: "option1" },
-    { label: "test2", value: "test2" },
-    { label: "Option2", value: "Option2" },
-  ],
-};
+Example.argTypes = {};
