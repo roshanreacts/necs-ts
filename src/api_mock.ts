@@ -45,19 +45,20 @@ export const ConfigOptions = [
 export type ModelsOptionsType = {
     id: number,
     name: string,
-    href: string
+    href: string,
+    slug: string
 }
 
 export const allModels = [
     {
         id: 1,
-        name: 'User',
+        name: 'User Model',
         href: '/dashboard/config/models/user',
         slug: "UserModel"
     },
     {
         id: 2,
-        name: 'Profile',
+        name: 'Profile Model',
         href: '/dashboard/config/models/profile',
         slug: 'ProfileModel'
     }
@@ -67,10 +68,10 @@ export type ModelType = {
     id: number,
     model_name: string,
     model_slug: string,
-    fields: UserFieldType[]
+    fields: FieldType[]
 }
 
-export type UserFieldType = {
+export type FieldType = {
     field_name: string,
     field_slug: string,
     field_type: string,
