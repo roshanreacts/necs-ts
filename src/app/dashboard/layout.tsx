@@ -8,16 +8,16 @@ export const metadata: Metadata = {
   description: "Welcome to mercury platform",
 };
 
-export default async function RootLayout({
-  children,
+export default function RootLayout({
+  children
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode,
 }) {
   const { isAuthenticated } = getKindeServerSession();
 
-  if (!(await isAuthenticated())) {
-    redirect("/");
-  }
+  // if (!(await isAuthenticated())) {
+  // redirect("/");
+  // }
 
   return (
     <html lang="en">

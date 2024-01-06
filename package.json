@@ -32,6 +32,7 @@
     "react-dom": "^18",
     "redis": "^4.6.12",
     "react-multi-select-component": "^4.3.4",
+    "react-hook-form": "^7.49.2",
     "react-select": "^5.8.0",
     "sharp": "^0.33.1",
     "vips": "^1.0.0",
