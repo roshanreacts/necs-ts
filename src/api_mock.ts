@@ -83,26 +83,88 @@ export const UserModel =
     id: 1,
     model_name: "User Model",
     model_slug: "user",
-    fields: [
-        {
-            field_name: "First Name",
-            field_slug: "first_name",
-            field_type: "string",
-            required: true,
+    fields: {
+        "firstName": {
+            "type": "string",
+            "isEditable": false,
+            "label": "First Name"
         },
-        {
-            field_name: "Last Name",
-            field_slug: "last_name",
-            field_type: "string",
-            required: true,
+        "lastName": {
+            "type": "string",
+            "isEditable": false,
+            "label": "Last Name"
         },
-        {
-            field_name: "Email",
-            field_slug: "email",
-            field_type: "string",
-            required: true,
+        "companyName": {
+            "type": "string",
+            "isEditable": false,
+            "label": "Company Name"
+        },
+        "email": {
+            "type": "string",
+            "require": true,
+            "isEditable": false,
+            "label": "Email"
+        },
+        "password": {
+            "type": "string",
+            "bcrypt": true,
+            "isEditable": false,
+            "label": "Password"
+        },
+        "mobile": {
+            "type": "string",
+            "isEditable": false,
+            "label": "Mobile"
+        },
+        "termsAndCondtions": {
+            "type": "boolean",
+            "default": false,
+            "isEditable": false,
+            "label": "Terms And Condtions"
+        },
+        "role": {
+            "type": "enum",
+            "enumType": "string",
+            "enum": [
+                "USER",
+                "ADMIN",
+                "ANONYMOUS",
+                "SELLER",
+                "BUYER",
+                "SERVICE_PROVIDER"
+            ],
+            "default": "USER",
+            "label": "Role"
+        },
+        "isVerified": {
+            "type": "boolean",
+            "default": false,
+            "isEditable": false,
+            "label": "Is Verified"
+        },
+        "status": {
+            "type": "enum",
+            "enumType": "string",
+            "enum": [
+                "PENDING",
+                "PENDING_VERIFICATION",
+                "APPROVED",
+                "REJECTED"
+            ],
+            "default": "PENDING",
+            "label": "Status"
+        },
+        "profile": {
+            "type": "relationship",
+            "ref": "Profile",
+            "label": "Profile"
+        },
+        "requestedProfile": {
+            "type": "string",
+            "many": true,
+            "label": "Requested Profile"
         }
-    ]
+    },
 }
 
 export const ProfileModel =
@@ -110,24 +172,86 @@ export const ProfileModel =
     id: 1,
     model_name: "Profile Model",
     model_slug: "profile",
-    fields: [
-        {
-            field_name: "First Name",
-            field_slug: "first_name",
-            field_type: "string",
-            required: true,
+    fields: {
+        "firstName": {
+            "type": "string",
+            "isEditable": false,
+            "label": "First Name"
         },
-        {
-            field_name: "Last Name",
-            field_slug: "last_name",
-            field_type: "string",
-            required: true,
+        "lastName": {
+            "type": "string",
+            "isEditable": false,
+            "label": "Last Name"
         },
-        {
-            field_name: "Email",
-            field_slug: "email",
-            field_type: "string",
-            required: true,
+        "companyName": {
+            "type": "string",
+            "isEditable": false,
+            "label": "Company Name"
+        },
+        "email": {
+            "type": "string",
+            "require": true,
+            "isEditable": false,
+            "label": "Email"
+        },
+        "password": {
+            "type": "string",
+            "bcrypt": true,
+            "isEditable": false,
+            "label": "Password"
+        },
+        "mobile": {
+            "type": "string",
+            "isEditable": false,
+            "label": "Mobile"
+        },
+        "termsAndCondtions": {
+            "type": "boolean",
+            "default": false,
+            "isEditable": false,
+            "label": "Terms And Condtions"
+        },
+        "role": {
+            "type": "enum",
+            "enumType": "string",
+            "enum": [
+                "USER",
+                "ADMIN",
+                "ANONYMOUS",
+                "SELLER",
+                "BUYER",
+                "SERVICE_PROVIDER"
+            ],
+            "default": "USER",
+            "label": "Role"
+        },
+        "isVerified": {
+            "type": "boolean",
+            "default": false,
+            "isEditable": false,
+            "label": "Is Verified"
+        },
+        "status": {
+            "type": "enum",
+            "enumType": "string",
+            "enum": [
+                "PENDING",
+                "PENDING_VERIFICATION",
+                "APPROVED",
+                "REJECTED"
+            ],
+            "default": "PENDING",
+            "label": "Status"
+        },
+        "profile": {
+            "type": "relationship",
+            "ref": "Profile",
+            "label": "Profile"
+        },
+        "requestedProfile": {
+            "type": "string",
+            "many": true,
+            "label": "Requested Profile"
         }
-    ]
+    },
 }

@@ -23,6 +23,9 @@ export default function AccordionModels({ items, isOpen }: AccordionType) {
         }
     };
 
+    // console.log([data.fields]);
+
+
     return (
         <AccordionContainer>
             {items && items.map((item: any, index: number) => (
@@ -32,13 +35,15 @@ export default function AccordionModels({ items, isOpen }: AccordionType) {
                         {item.name}
                     </AccordionHeader>
                     <AccordionContent isOpen={openIndex === index}>
-                        {data && data.fields.map((field: any, index: number) => (
-                            <div style={{ display: "flex", flexDirection: "column", boxShadow: "2px 2px 2px #f4f4f4" }} key={index}>
-                                <div key={field.field_slug}>
-                                    <DyFormRender fields={field} />
+                        {data && [data.fields].map((field: any, index: number) => {
+                            return (
+                                <div style={{ display: "flex", flexDirection: "column", boxShadow: "2px 2px 2px #f4f4f4" }} key={index}>
+                                    <div>
+                                        <DyFormRender fields={field} />
+                                    </div>
                                 </div>
-                            </div>
-                        ))}
+                            )
+                        })}
                     </AccordionContent>
                 </AccordionItem>
             ))
