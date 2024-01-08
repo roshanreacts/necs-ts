@@ -57,6 +57,8 @@ function DynamicForm({ fieldSlug, fieldValue }: DynamicFormProps) {
         formState: { errors },
     } = useForm<any>();
 
+    const [dynamicFieldOptions, setDynamicFieldOptions] = React.useState<any[]>([]);
+
     const selectedType = watch("type");
 
     const setFieldValue = (field: string, value: any) => {
@@ -65,6 +67,14 @@ function DynamicForm({ fieldSlug, fieldValue }: DynamicFormProps) {
 
     const onSubmit: SubmitHandler<any> = (data) => {
         console.log(`Form ${fieldSlug}, data:`, data);
+    };
+
+    React.useEffect(() => {
+        setDynamicFieldOptions(fieldValue.fieldOptions || []);
+    }, [fieldValue.fieldOptions]);
+
+    const addNewFieldOption = () => {
+        setDynamicFieldOptions((prevOptions) => [...prevOptions, { key: "", value: "" }]);
     };
 
     const renderField = (
@@ -100,6 +110,35 @@ function DynamicForm({ fieldSlug, fieldValue }: DynamicFormProps) {
                     );
                 }
             case "fieldOptions":
+                return (
+                    <>
+                        {startCase(field)}
+                        <div style={{ display: "flex", flexDirection: "column" }}>
+                            {dynamicFieldOptions.length > 0 &&
+                                dynamicFieldOptions.map((dynamicField, index) => {
+                                    return (
+                                        <div key={`${fieldSlug}-option-${index}`} style={{ padding: "10px" }}>
+                                            <input
+                                                {...register(`fieldOptions[${index}].key`)}
+                                                type="text"
+                                                // @ts-ignore
+                                                defaultValue={fieldValue.fieldOptions[index]?.key}
+                                                onChange={(e) => setFieldValue(`fieldOptions[${index}].key`, e.target.value)}
+                                            />
+                                            <input
+                                                {...register(`fieldOptions[${index}].value`)}
+                                                type="text"
+                                                // @ts-ignore
+                                                defaultValue={fieldValue.fieldOptions[index]?.value}
+                                                onChange={(e) => setFieldValue(`fieldOptions[${index}].value`, e.target.value)}
+                                            />
+                                        </div>
+                                    );
+                                })}
+                            <button onClick={addNewFieldOption}>Add New</button>
+                        </div>
+                    </>
+                );
             case "enum":
                 return (
                     <>
@@ -146,12 +185,13 @@ function DynamicForm({ fieldSlug, fieldValue }: DynamicFormProps) {
                     </>
                 );
             default:
-                return (
-                    <>
-                        {startCase(field)}
-                        <input type="checkbox" {...props} onChange={(e) => setFieldValue(field, e.target.checked)} />
-                    </>
-                );
+                return;
+            // (
+            //     <>
+            //         {startCase(field)}
+            //         <input type="checkbox" {...props} onChange={(e) => setFieldValue(field, e.target.checked)} />
+            //     </>
+            // );
         }
     };
 

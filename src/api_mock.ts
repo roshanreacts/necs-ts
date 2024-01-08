@@ -87,7 +87,8 @@ export const UserModel =
         "firstName": {
             "type": "string",
             "isEditable": false,
-            "label": "First Name"
+            "label": "First Name",
+            "fieldOptions": [{ "key": "USER", "value": "Adarsh" }, { "key": "ADMIN", "value": "Adarsh" }]
         },
         "lastName": {
             "type": "string",
@@ -176,7 +177,8 @@ export const ProfileModel =
         "firstName": {
             "type": "string",
             "isEditable": false,
-            "label": "First Name"
+            "label": "First Name",
+            "fieldOptions": [{ "key": "USER", "value": "Adarsh" }, { "key": "ADMIN", "value": "Adarsh" }]
         },
         "lastName": {
             "type": "string",
@@ -223,7 +225,8 @@ export const ProfileModel =
                 "SERVICE_PROVIDER"
             ],
             "default": "USER",
-            "label": "Role"
+            "label": "Role",
+            "fieldOptions": [{ "defaultValue": "USER" }]
         },
         "isVerified": {
             "type": "boolean",
