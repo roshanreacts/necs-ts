@@ -21,7 +21,8 @@ export default function DyFormRender({ fields }: { fields: any }) {
             type: "text",
             isEditable: false,
             required: false,
-        }; // Set default values
+            fieldOptions: []
+        };
         setDynamicFields([...dynamicFields, { [newFieldSlug]: newFieldValue }]);
     };
 
@@ -55,17 +56,15 @@ function DynamicForm({ fieldSlug, fieldValue }: DynamicFormProps) {
         watch,
         formState: { errors },
     } = useForm<any>();
-    const [formKey, setFormKey] = React.useState(0);
 
     const selectedType = watch("type");
 
     const setFieldValue = (field: string, value: any) => {
         setValue(field, value);
-        setFormKey((prevKey) => prevKey + 1);
     };
 
     const onSubmit: SubmitHandler<any> = (data) => {
-        console.log(`Form for ${fieldSlug} submitted with data:`, data);
+        console.log(`Form ${fieldSlug}, data:`, data);
     };
 
     const renderField = (
@@ -88,7 +87,6 @@ function DynamicForm({ fieldSlug, fieldValue }: DynamicFormProps) {
                     <>
                         {startCase(field)}
                         <input {...props} onChange={(e) => setFieldValue(field, e.target.value)} />
-                        ;
                     </>
                 );
             case "default":
@@ -101,6 +99,7 @@ function DynamicForm({ fieldSlug, fieldValue }: DynamicFormProps) {
                         </>
                     );
                 }
+            case "fieldOptions":
             case "enum":
                 return (
                     <>
@@ -114,7 +113,7 @@ function DynamicForm({ fieldSlug, fieldValue }: DynamicFormProps) {
                 );
             case "type":
                 return (
-                    <>
+                    <div style={{ display: "flex", flexDirection: "column" }}>
                         {startCase(field)}
                         <select {...props} multiple={false} onChange={(e) => setFieldValue(field, e.target.value)}>
                             {options.map((item: any) => (
@@ -123,8 +122,17 @@ function DynamicForm({ fieldSlug, fieldValue }: DynamicFormProps) {
                                 </option>
                             ))}
                         </select>
-                    </>
-                );
+                        {field === "type" && (selectedType == undefined && selectedType === "enum") && field !== "enum" && (
+                            <>
+                                {(selectedType === undefined || selectedType === 'enum') && (
+                                    <>
+                                        <p>{startCase("enum")}</p>
+                                        <textarea {...register("enum")} onChange={(e) => setFieldValue(field, e.target.value)} />
+                                    </>
+                                )}
+                            </>
+                        )}
+                    </div>);
             case "isEditable":
             case "required":
                 return (
@@ -148,7 +156,7 @@ function DynamicForm({ fieldSlug, fieldValue }: DynamicFormProps) {
     };
 
     return (
-        <form key={formKey} onSubmit={handleSubmit((data) => onSubmit(data))}>
+        <form key={fieldSlug + fieldValue} onSubmit={handleSubmit((data) => onSubmit(data))}>
             {Object.entries(fieldValue).map(([key, value]: [string, any]) => {
                 return (
                     <div
