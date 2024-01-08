@@ -119,19 +119,27 @@ function DynamicForm({ fieldSlug, fieldValue }: DynamicFormProps) {
                                     return (
                                         <div key={`${fieldSlug}-option-${index}`} style={{ padding: "10px" }}>
                                             <input
-                                                {...register(`fieldOptions[${index}].key`)}
+                                                {...register(`fieldValue.fieldOptions[${index}].key`)}
                                                 type="text"
                                                 // @ts-ignore
-                                                defaultValue={fieldValue.fieldOptions[index]?.key}
+                                                defaultValue={dynamicField?.key}
                                                 onChange={(e) => setFieldValue(`fieldOptions[${index}].key`, e.target.value)}
                                             />
                                             <input
-                                                {...register(`fieldOptions[${index}].value`)}
+                                                {...register(`fieldValue.fieldOptions[${index}].value`)}
                                                 type="text"
                                                 // @ts-ignore
-                                                defaultValue={fieldValue.fieldOptions[index]?.value}
+                                                defaultValue={dynamicField?.value}
                                                 onChange={(e) => setFieldValue(`fieldOptions[${index}].value`, e.target.value)}
                                             />
+                                            <button data-id={index} onClick={() => {
+                                                const newOptions = [...dynamicFieldOptions];
+                                                newOptions.splice(index, 1);
+                                                console.log([...dynamicFieldOptions], newOptions);
+
+                                                setDynamicFieldOptions(newOptions)
+                                                setFieldValue(`fieldValue.fieldOptions`, newOptions);
+                                            }}>Delete</button>
                                         </div>
                                     );
                                 })}

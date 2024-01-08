@@ -93,7 +93,8 @@ export const UserModel =
         "lastName": {
             "type": "string",
             "isEditable": false,
-            "label": "Last Name"
+            "label": "Last Name",
+            "fieldOptions": [{ "key": "DATA", "value": "Adarsh" }, { "key": "DATA2", "value": "Adarsh" }]
         },
         "companyName": {
             "type": "string",

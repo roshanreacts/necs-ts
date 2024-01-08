@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import styled from '@emotion/styled'
 import { FieldType, ModelType, ModelsOptionsType, ProfileModel, UserModel } from '@/api_mock';
 import DyFormRender from '@/containers/DyFormRender/DyFormRender';
+import { HttpResponse, http } from 'msw';
 
 type AccordionType = {
     items?: ModelsOptionsType[],
@@ -15,16 +16,19 @@ export default function AccordionModels({ items, isOpen }: AccordionType) {
     const handleAccordionClick = (index: number, fieldSlug: string) => {
         setOpenIndex((prevIndex: number) => (prevIndex === index ? null : index));
 
-        // call the api to get model with slug as value
-        if (fieldSlug === "UserModel") {
-            setData(UserModel)
-        } else {
-            setData(ProfileModel)
-        }
+        (async () => {
+            const users = http.get('https://api.example.com/user', () => {
+                if (fieldSlug === "UserModel") {
+                    return HttpResponse.json(UserModel)
+                } else {
+                    return HttpResponse.json(ProfileModel)
+                }
+            })
+
+            // @ts-ignore
+            setData(await users.resolver()?.json())
+        })();
     };
-
-    // console.log([data.fields]);
-
 
     return (
         <AccordionContainer>
