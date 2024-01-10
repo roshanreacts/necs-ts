@@ -110,13 +110,15 @@ export const UserModel =
         "password": {
             "type": "string",
             "bcrypt": true,
+            "rounds":"number",
             "isEditable": false,
             "label": "Password"
         },
         "mobile": {
             "type": "string",
             "isEditable": false,
-            "label": "Mobile"
+            "label": "Mobile",
+            "isCreatable":false
         },
         "termsAndCondtions": {
             "type": "boolean",
@@ -164,7 +166,8 @@ export const UserModel =
         "requestedProfile": {
             "type": "string",
             "many": true,
-            "label": "Requested Profile"
+            "label": "Requested Profile",
+            "isCreatable": false,
         }
     },
 }

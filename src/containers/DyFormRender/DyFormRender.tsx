@@ -60,6 +60,9 @@ function DynamicForm({ fieldSlug, fieldValue }: DynamicFormProps) {
     const [dynamicFieldOptions, setDynamicFieldOptions] = React.useState<any[]>([]);
 
     const selectedType = watch("type") || fieldValue.type;
+    console.log("🚀 ~ file: DyFormRender.tsx:63 ~ DynamicForm ~ selectedType:", selectedType)
+
+    
 
     const setFieldValue = (field: string, value: any) => {
         setValue(field, value);
@@ -170,13 +173,50 @@ function DynamicForm({ fieldSlug, fieldValue }: DynamicFormProps) {
                                 {(selectedType === undefined || selectedType === 'enum') && (
                                     <>
                                         <p>{startCase("enum")}</p>
-                                        <textarea {...register("enum")} onChange={(e) => setFieldValue(field, e.target.value)} />
+                                        <textarea {...register("enum")} onChange={(e) => setFieldValue(selectedType, e.target.value)} />
                                     </>
                                 )}
                             </>
                         )}
                     </div>);
             case "isEditable":
+                return (
+                    <>
+                        {startCase(field)}
+                        <input
+                            type="checkbox"
+                            {...props}
+                            
+                            onChange={(e) => setFieldValue(selectedType, e.target.checked)}
+                            
+                        />
+                    </>
+                );
+                case "isCreatable":
+                    return (
+                        <>
+                            {startCase(field)}
+                            <input
+                                type="checkbox"
+                                {...props}
+                                
+                                onChange={(e) => setFieldValue(selectedType, e.target.checked)}
+                            />
+                        </>
+                    );
+                    case "unique":
+                        return (
+                            <>
+                                {startCase(field)}
+                                <input
+                                    type="checkbox"
+                                    {...props}
+                                    
+                                    onChange={(e) => setFieldValue(selectedType, e.target.checked)}
+                                />
+                            </>
+                        );
+
             case "required":
                 return (
                     <>
@@ -188,6 +228,48 @@ function DynamicForm({ fieldSlug, fieldValue }: DynamicFormProps) {
                         />
                     </>
                 );
+            case "many":
+                return (
+                    <>
+                        {startCase(field)}
+                        <input
+                            type="checkbox"
+                            {...props}
+                            onChange={(e) => setFieldValue(field, e.target.checked)}
+                        />
+                    </>
+                );
+            case "ignoreGraphql":
+                return (
+                    <>
+                        {startCase(field)}
+                        <input
+                            type="checkbox"
+                            {...props}
+                            onChange={(e) => setFieldValue(field, e.target.checked)}
+                        />
+                    </>
+                );
+            case "bcrypt":
+                return (
+                    <>
+                        {startCase(field)}
+                        <input
+                            type="checkbox"
+                            {...props}
+                            onChange={(e) => setFieldValue(field, e.target.checked)}
+                        />
+                    </>
+                );
+            case "rounds":
+                return (
+                    <>
+                        {startCase(field)}
+                        <input type="number" {...props} onChange={(e) => setFieldValue(field, e.target.value)} />
+                    </>
+                );
+
+
             default:
                 return;
             // (
