@@ -59,7 +59,7 @@ function DynamicForm({ fieldSlug, fieldValue }: DynamicFormProps) {
 
     const [dynamicFieldOptions, setDynamicFieldOptions] = React.useState<any[]>([]);
 
-    const selectedType = watch("type");
+    const selectedType = watch("type") || fieldValue.type;
 
     const setFieldValue = (field: string, value: any) => {
         setValue(field, value);
@@ -121,22 +121,18 @@ function DynamicForm({ fieldSlug, fieldValue }: DynamicFormProps) {
                                             <input
                                                 {...register(`fieldValue.fieldOptions[${index}].key`)}
                                                 type="text"
-                                                // @ts-ignore
                                                 defaultValue={dynamicField?.key}
                                                 onChange={(e) => setFieldValue(`fieldOptions[${index}].key`, e.target.value)}
                                             />
                                             <input
                                                 {...register(`fieldValue.fieldOptions[${index}].value`)}
                                                 type="text"
-                                                // @ts-ignore
                                                 defaultValue={dynamicField?.value}
                                                 onChange={(e) => setFieldValue(`fieldOptions[${index}].value`, e.target.value)}
                                             />
                                             <button data-id={index} onClick={() => {
                                                 const newOptions = [...dynamicFieldOptions];
                                                 newOptions.splice(index, 1);
-                                                console.log([...dynamicFieldOptions], newOptions);
-
                                                 setDynamicFieldOptions(newOptions)
                                                 setFieldValue(`fieldValue.fieldOptions`, newOptions);
                                             }}>Delete</button>
@@ -150,7 +146,7 @@ function DynamicForm({ fieldSlug, fieldValue }: DynamicFormProps) {
             case "enum":
                 return (
                     <>
-                        {(selectedType === undefined || selectedType === 'enum') && (
+                        {(selectedType == undefined || selectedType === 'enum') && (
                             <>
                                 <p>{startCase(field)}</p>
                                 <textarea {...props} onChange={(e) => setFieldValue(field, e.target.value)} />
@@ -169,7 +165,7 @@ function DynamicForm({ fieldSlug, fieldValue }: DynamicFormProps) {
                                 </option>
                             ))}
                         </select>
-                        {field === "type" && (selectedType == undefined && selectedType === "enum") && field !== "enum" && (
+                        {field === "type" && (selectedType == undefined || selectedType === "enum") && field !== "enum" && (
                             <>
                                 {(selectedType === undefined || selectedType === 'enum') && (
                                     <>
