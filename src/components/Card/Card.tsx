@@ -2,9 +2,9 @@
 import styled from "@emotion/styled";
 import React from "react";
 
-export default function Card({ children }: { children: React.ReactNode }) {
+export default function Card({ children, ...rest }: { children: React.ReactNode, [x:string]:any}) {
     return (
-        <CardContainer>
+        <CardContainer {...rest}>
             {children}
         </CardContainer>
     )

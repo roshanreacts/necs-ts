@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import React from "react";
+import { EmotionThemeProvider } from "../utils/EmotionThemeProvider";
 // import { Inter } from 'next/font/google'
 import "./globals.css";
 
@@ -16,7 +18,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body><EmotionThemeProvider>{children}</EmotionThemeProvider></body>
     </html>
   );
 }

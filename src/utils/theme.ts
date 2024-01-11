@@ -1,5 +1,4 @@
 import '@emotion/react'
-
 export const lightTheme = {
   fontFace: {
     fontFamily: 'Roboto',
@@ -7,58 +6,58 @@ export const lightTheme = {
   },
   typography: {
     h1: {
-      fontSize: '2rem',
-      fontWeight: 500,
+      "font-size": '2rem',
+      "font-weight": 500,
     },
     h2: {
-      fontSize: '1.75rem',
-      fontWeight: 500,
+      "font-size": '1.75rem',
+      "font-weight": 500,
     },
     h3: {
-      fontSize: '1.5rem',
-      fontWeight: 500,
+      "font-size": '1.5rem',
+      "font-weight": 500,
     },
     h4: {
-      fontSize: '1.25rem',
-      fontWeight: 500,
+      "font-size": '1.25rem',
+      "font-weight": 500,
     },
     h5: {
-      fontSize: '1.125rem',
-      fontWeight: 500,
+      "font-size": '1.125rem',
+      "font-weight": 500,
     },
     h6: {
-      fontSize: '1rem',
-      fontWeight: 500,
+      "font-size": '1rem',
+      "font-weight": 500,
     },
     subtitle1: {
-      fontSize: '1rem',
-      fontWeight: 400,
+      "font-size": '1rem',
+      "font-weight": 400,
     },
     subtitle2: {
-      fontSize: '0.875rem',
-      fontWeight: 400,
+      "font-size": '0.875rem',
+      "font-weight": 400,
     },
     body1: {
-      fontSize: '1rem',
-      fontWeight: 400,
+      "font-size": '1rem',
+      "font-weight": 400,
     },
     body2: {
-      fontSize: '0.875rem',
-      fontWeight: 400,
+      "font-size": '0.875rem',
+      "font-weight": 400,
     },
     button: {
-      fontSize: '0.875rem',
-      fontWeight: 500,
-      textTransform: 'none',
+      "font-size": '0.875rem',
+      "font-weight": 500,
+      "text-transform": 'none',
     },
     caption: {
-      fontSize: '0.75rem',
-      fontWeight: 400,
+      "font-size": '0.75rem',
+      "font-weight": 400,
     },
     overline: {
-      fontSize: '0.75rem',
-      fontWeight: 500,
-      textTransform: 'none',
+      "font-size": '0.75rem',
+      "font-weight": 500,
+      "text-transform": 'none',
     }
   },
   colors: {
@@ -87,58 +86,58 @@ declare module '@emotion/react' {
     };
     typography: {
       h1: {
-        fontSize: string;
-        fontWeight: number;
+        "font-size": string;
+        "font-weight": number;
       };
       h2: {
-        fontSize: string;
-        fontWeight: number;
+        "font-size": string;
+        "font-weight": number;
       };
       h3: {
-        fontSize: string;
-        fontWeight: number;
+        "font-size": string;
+        "font-weight": number;
       };
       h4: {
-        fontSize: string;
-        fontWeight: number;
+        "font-size": string;
+        "font-weight": number;
       };
       h5: {
-        fontSize: string;
-        fontWeight: number;
+        "font-size": string;
+        "font-weight": number;
       };
       h6: {
-        fontSize: string;
-        fontWeight: number;
+        "font-size": string;
+        "font-weight": number;
       };
       subtitle1: {
-        fontSize: string;
-        fontWeight: number;
+        "font-size": string;
+        "font-weight": number;
       };
       subtitle2: {
-        fontSize: string;
-        fontWeight: number;
+        "font-size": string;
+        "font-weight": number;
       };
       body1: {
-        fontSize: string;
-        fontWeight: number;
+        "font-size": string;
+        "font-weight": number;
       };
       body2: {
-        fontSize: string;
-        fontWeight: number;
+        "font-size": string;
+        "font-weight": number;
       };
       button: {
-        fontSize: string;
-        fontWeight: number;
-        textTransform: string;
+        "font-size": string;
+        "font-weight": number;
+        "text-transform": string;
       };
       caption: {
-        fontSize: string;
-        fontWeight: number;
+        "font-size": string;
+        "font-weight": number;
       };
       overline: {
-        fontSize: string;
-        fontWeight: number;
-        textTransform: string;
+        "font-size": string;
+        "font-weight": number;
+        "text-transform": string;
       };
     };
     colors: {
@@ -153,3 +152,4 @@ declare module '@emotion/react' {
     };
   }
 }
+

@@ -1,44 +1,59 @@
+import { FaUser, FaConnectdevelop } from "react-icons/fa";
+import { CgProfile, CgComponents } from "react-icons/cg";
+import { RiPagesLine } from "react-icons/ri";
+import { TiTabsOutline } from "react-icons/ti";
+import { FiLayout } from "react-icons/fi";
+
+
 export type ConfigOptionsType = {
     id: number,
     name: string,
-    href: string
+    href: string,
+    icon: any
 }
 
 export const ConfigOptions = [
     {
         id: 1,
         name: 'Users',
-        href: '/dashboard/config/users'
+        href: '/dashboard/config/users', 
+        icon: FaUser
     },
     {
         id: 2,
         name: 'Profiles',
-        href: '/dashboard/config/profiles'
+        href: '/dashboard/config/profiles',
+        icon: CgProfile
     },
     {
         id: 3,
         name: 'Models',
-        href: '/dashboard/config/models'
+        href: '/dashboard/config/models',
+        icon: FaConnectdevelop
     },
     {
         id: 4,
         name: 'Pages',
-        href: '/dashboard/config/pages'
+        href: '/dashboard/config/pages',
+        icon: RiPagesLine
     },
     {
         id: 5,
         name: 'Tabs',
-        href: '/dashboard/config/tabs'
+        href: '/dashboard/config/tabs',
+        icon: TiTabsOutline
     },
     {
         id: 6,
         name: 'Layouts',
-        href: '/dashboard/config/layouts'
+        href: '/dashboard/config/layouts',
+        icon: FiLayout
     },
     {
         id: 7,
         name: 'Components',
-        href: '/dashboard/config/components'
+        href: '/dashboard/config/components',
+        icon: CgComponents
     }
 ]
 
