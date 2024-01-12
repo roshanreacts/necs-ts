@@ -101,8 +101,11 @@ export const UserModel =
     fields: {
         "firstName": {
             "type": "string",
+            "default": false,
+            "unique":false,
             "isEditable": false,
             "label": "First Name",
+            "many":true,
             "fieldOptions": [{ "key": "USER", "value": "Adarsh" }, { "key": "ADMIN", "value": "Adarsh" }]
         },
         "lastName": {
@@ -196,6 +199,8 @@ export const ProfileModel =
         "firstName": {
             "type": "string",
             "isEditable": false,
+            "default": false,
+            "unique":false,
             "label": "First Name",
             "fieldOptions": [{ "key": "USER", "value": "Adarsh" }, { "key": "ADMIN", "value": "Adarsh" }]
         },
