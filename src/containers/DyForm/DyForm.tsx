@@ -1,5 +1,5 @@
 // DyForm.tsx
-"use client"
+"use client";
 import CheckboxGroup from "@/components/CheckboxGroup/CheckboxGroup";
 import Input from "@/components/Input/Input";
 import MultiSelectDropDown from "@/components/MultiSelectDropDown/MultiSelectDropDown";
@@ -24,7 +24,7 @@ export default function DyForm({ formConfig }: { formConfig: any[] }) {
     return acc;
   }, {});
 
-  const renderField = (field: any, props) => {
+  const renderField = (field: any, props: any) => {
     switch (field.type) {
       case "text":
         return <Input label={field.name} {...props} />;
@@ -42,20 +42,16 @@ export default function DyForm({ formConfig }: { formConfig: any[] }) {
           />
         );
       default:
-        return (
-          <input
-            type={field.type}
-            placeholder={field.name}
-            {...props}
-          />
-        );
+        return <input type={field.type} placeholder={field.name} {...props} />;
     }
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={onSubmit}>
       {formConfig.map((field, index) => (
-        <div key={index}>{renderField(field, registeredFields[field.name])}</div>
+        <div key={index}>
+          {renderField(field, registeredFields[field.name])}
+        </div>
       ))}
       <input type="submit" />
     </form>

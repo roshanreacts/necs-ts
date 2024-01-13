@@ -82,8 +82,6 @@ const handler = startServerAndCreateNextHandler(server, {
   }),
 });
 
-export const mercuryInstance = mercury;
-
 export async function GET(request: any) {
   return handler(request);
 }
