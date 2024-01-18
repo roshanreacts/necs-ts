@@ -14,14 +14,14 @@ type AccordionType = {
 export default function AccordionModels({ items, isOpen }: AccordionType) {
     const [openIndex, setOpenIndex] = useState<number | any>(null);
     const [data, setData] = useState<ModelType | any>(null);
-    const [isModalOpen, setIsModalOpen] =useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
 
     const handleAccordionClick = (index: number, fieldSlug: string) => {
         setOpenIndex((prevIndex: number) => (prevIndex === index ? null : index));
 
         (async () => {
-            const users = http.get('https://api.example.com/user', () => {
+            const users = http.get('https://api.example.com/user', (): any => {
                 if (fieldSlug === "UserModel") {
                     return HttpResponse.json(UserModel)
                 } else {
@@ -35,16 +35,16 @@ export default function AccordionModels({ items, isOpen }: AccordionType) {
     };
     const openModal = () => {
         setIsModalOpen(true);
-      };
-    
-      // Function to close the modal
-      const closeModal = () => {
-        setIsModalOpen(false);
-      };
+    };
 
-    const handleModalClick=()=>{
+    // Function to close the modal
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
+
+    const handleModalClick = () => {
         alert("clicked")
-        
+
     }
     return (
         <AccordionContainer>
@@ -61,9 +61,6 @@ export default function AccordionModels({ items, isOpen }: AccordionType) {
                                     <div>
                                         <DyFormRender fields={field} />
                                         <button onClick={openModal}>Open Modal</button>
-                                        {/* <Modal isOpen={isModalOpen} onClose={closeModal}>
-                                        <DyFormRender fields={field} />
-                                        </Modal> */}
                                     </div>
                                 </div>
                             )
@@ -77,7 +74,7 @@ export default function AccordionModels({ items, isOpen }: AccordionType) {
 }
 
 const AccordionContainer = styled.div`
-  width: 300px;
+  width: 100%;
 `;
 
 const AccordionItem = styled.div`
