@@ -3,6 +3,8 @@ import styled from '@emotion/styled'
 import { FieldType, ModelType, ModelsOptionsType, ProfileModel, UserModel } from '@/api_mock';
 import DyFormRender from '@/containers/DyFormRender/DyFormRender';
 import { HttpResponse, http } from 'msw';
+import Modal from '../Modal/Modal';
+
 
 type AccordionType = {
     items?: ModelsOptionsType[],
@@ -12,6 +14,8 @@ type AccordionType = {
 export default function AccordionModels({ items, isOpen }: AccordionType) {
     const [openIndex, setOpenIndex] = useState<number | any>(null);
     const [data, setData] = useState<ModelType | any>(null);
+    const [isModalOpen, setIsModalOpen] =useState(false);
+
 
     const handleAccordionClick = (index: number, fieldSlug: string) => {
         setOpenIndex((prevIndex: number) => (prevIndex === index ? null : index));
@@ -29,7 +33,19 @@ export default function AccordionModels({ items, isOpen }: AccordionType) {
             setData(await users.resolver()?.json())
         })();
     };
+    const openModal = () => {
+        setIsModalOpen(true);
+      };
+    
+      // Function to close the modal
+      const closeModal = () => {
+        setIsModalOpen(false);
+      };
 
+    const handleModalClick=()=>{
+        alert("clicked")
+        
+    }
     return (
         <AccordionContainer>
             {items && items.map((item: any, index: number) => (
@@ -44,6 +60,10 @@ export default function AccordionModels({ items, isOpen }: AccordionType) {
                                 <div style={{ display: "flex", flexDirection: "column", boxShadow: "2px 2px 2px #f4f4f4" }} key={index}>
                                     <div>
                                         <DyFormRender fields={field} />
+                                        <button onClick={openModal}>Open Modal</button>
+                                        {/* <Modal isOpen={isModalOpen} onClose={closeModal}>
+                                        <DyFormRender fields={field} />
+                                        </Modal> */}
                                     </div>
                                 </div>
                             )

@@ -1,6 +1,10 @@
 // src/components/Modal.tsx
 import React from 'react';
 import styled from '@emotion/styled';
+import { css } from '@emotion/css';
+import { FaRegWindowClose } from "react-icons/fa";
+import { DynamicForm } from '@/containers/DyFormRender/DyFormRender';
+
 
 const ModalWrapper = styled.div`
   position: fixed;
@@ -20,22 +24,40 @@ const ModalContent = styled.div`
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  overflow: scroll;
+  height: 500px;
 `;
+
+const closeButtonCss = css`
+    width: 100%;
+    display: flex;
+    justify-content: end;`
+const buttonStyleCss=css`
+    display:flex;
+    position:fixed;
+    align-items:center;
+    gap:5px;
+`
 
 export type ModalProps = {
   isOpen: boolean;
   onClose: () => void;
-  children: React.ReactNode;
+  children?: React.ReactNode;
+  fieldSlug:any;
+  fieldValue:any
 }
 
-const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
+const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children ,fieldSlug,fieldValue}) => {
   if (!isOpen) return null;
 
   return (
     <ModalWrapper>
       <ModalContent>
-        <button onClick={onClose}>Close</button>
-        {children}
+        <div className={closeButtonCss}>
+        <button className={buttonStyleCss} onClick={onClose}>Close <FaRegWindowClose/></button>
+
+        </div>
+        <DynamicForm fieldSlug={fieldSlug} fieldValue={fieldValue} />
       </ModalContent>
     </ModalWrapper>
   );
