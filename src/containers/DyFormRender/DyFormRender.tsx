@@ -37,6 +37,7 @@ export default function DyFormRender({ fields }: { fields: any }) {
             default: false,
         };
         setDynamicFields([...dynamicFields, { [newFieldSlug]: newFieldValue }]);
+        openModal(newFieldSlug);
     };
 
     return (
@@ -49,9 +50,10 @@ export default function DyFormRender({ fields }: { fields: any }) {
 
                     return (
                         <div key={fieldSlug} style={{ padding: "10px" }}>
-                            <DynamicForm fieldSlug={fieldSlug} fieldValue={fieldValue} />
-
-                            <button onClick={() => openModal(fieldSlug)}>Open Modal</button>
+                            {/* <DynamicForm fieldSlug={fieldSlug} fieldValue={fieldValue} /> */}
+                            {/* @ts-ignore */}
+                            {`${fieldValue?.label}`}
+                            <button onClick={() => openModal(fieldSlug)}>Edit</button>
                             <Modal isOpen={isModalOpen} onClose={() => closeModal(fieldSlug)} fieldSlug={fieldSlug} fieldValue={fieldValue} />
                         </div>
                     );

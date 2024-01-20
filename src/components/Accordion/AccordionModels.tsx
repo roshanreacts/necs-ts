@@ -60,7 +60,6 @@ export default function AccordionModels({ items, isOpen }: AccordionType) {
                                 <div style={{ display: "flex", flexDirection: "column", boxShadow: "2px 2px 2px #f4f4f4" }} key={index}>
                                     <div>
                                         <DyFormRender fields={field} />
-                                        <button onClick={openModal}>Open Modal</button>
                                     </div>
                                 </div>
                             )
