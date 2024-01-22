@@ -9,13 +9,12 @@ import Modal from '../Modal/Modal';
 type AccordionType = {
     items?: ModelsOptionsType[],
     isOpen: boolean,
+    setSelectSlugOption: any
 }
 
-export default function AccordionModels({ items, isOpen }: AccordionType) {
+export default function AccordionModels({ items, isOpen, setSelectSlugOption }: AccordionType) {
     const [openIndex, setOpenIndex] = useState<number | any>(null);
     const [data, setData] = useState<ModelType | any>(null);
-    const [isModalOpen, setIsModalOpen] = useState(false);
-
 
     const handleAccordionClick = (index: number, fieldSlug: string) => {
         setOpenIndex((prevIndex: number) => (prevIndex === index ? null : index));
@@ -33,28 +32,16 @@ export default function AccordionModels({ items, isOpen }: AccordionType) {
             setData(await users.resolver()?.json())
         })();
     };
-    const openModal = () => {
-        setIsModalOpen(true);
-    };
 
-    // Function to close the modal
-    const closeModal = () => {
-        setIsModalOpen(false);
-    };
-
-    const handleModalClick = () => {
-        alert("clicked")
-
-    }
     return (
         <AccordionContainer>
             {items && items.map((item: any, index: number) => (
                 <AccordionItem key={index}>
                     <AccordionHeader
-                        onClick={() => handleAccordionClick(index, item.slug)}>
+                        onClick={() => { handleAccordionClick(index, item.slug), setSelectSlugOption(item.slug) }}>
                         {item.name}
                     </AccordionHeader>
-                    <AccordionContent isOpen={openIndex === index}>
+                    <AccordionContent isOpen={openIndex === index} setSelectSlugOption>
                         {data && [data.fields].map((field: any, index: number) => {
                             return (
                                 <div style={{ display: "flex", flexDirection: "column", boxShadow: "2px 2px 2px #f4f4f4" }} key={index}>

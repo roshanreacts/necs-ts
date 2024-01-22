@@ -24,6 +24,7 @@
     "@tanstack/react-table": "^8.11.3",
     "@trpc/client": "^10.45.0",
     "@trpc/server": "^10.45.0",
+    "ag-grid-react": "^31.0.2",
     "framer-motion": "^10.16.16",
     "graphql-fields": "^2.0.3",
     "graphql-middleware": "^6.1.35",
