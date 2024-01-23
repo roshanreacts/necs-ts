@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import { http, HttpResponse } from 'msw';
 import { UserModel, ProfileModel } from '@/api_mock';
+import Modal from '../Modal/Modal';
 
 // interface TableColumnProps {
 //   headerName: String,
@@ -19,6 +20,8 @@ type TableType = {
 export default function TableComponent({ selectSlugOption, tableData }: TableType) {
 
   const [rowData, setRowData] = useState([]);
+  const [selectedRowData, setSelectedRowData] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const ActionButton = () =>
   (
@@ -58,7 +61,7 @@ export default function TableComponent({ selectSlugOption, tableData }: TableTyp
   ]);
 
   useEffect(() => {
-    const newColumnDefs = Object.keys(tableData).map((fieldName: string) => {
+    const newColumnDefs : any = Object.keys(tableData).map((fieldName: string) => {
       console.log(tableData[fieldName]);
       console.log(fieldName);
 
@@ -77,8 +80,22 @@ export default function TableComponent({ selectSlugOption, tableData }: TableTyp
     setRowData(newColumnDefs);
   }, [tableData]);
 
+    const onSelectionChanged = (event: { api: { getSelectedRows: () => any; }; }) => {
+    const selectedRows = event.api.getSelectedRows();
+    if (selectedRows.length > 0) {
+      setSelectedRowData(selectedRows[0].data);
+      setIsModalOpen(true);
+    }
+  };
+
+
+  function closeModal(): void {
+    setIsModalOpen(false);
+  }
 
   return (
+    <>
+      
     <div className="ag-theme-quartz-light" style={{ width: '100%', height: '100%', padding: "0px" }}>
       <AgGridReact
         rowData={rowData}
@@ -86,9 +103,19 @@ export default function TableComponent({ selectSlugOption, tableData }: TableTyp
         columnDefs={columnDefs}
         pagination={true}
         rowSelection="multiple"
-        onSelectionChanged={(event) => console.log('Row Selected!', event.api.getSelectedRows()[0]?.data)}
+        onSelectionChanged={onSelectionChanged}
         onCellValueChanged={(event) => console.log(`New Cell Value: ${event.value}`)}
       />
     </div>
+    {isModalOpen && (
+        <Modal
+          isOpen={isModalOpen}
+          onClose={closeModal}
+          fieldSlug={selectedRowData} 
+          fieldValue={selectedRowData}
+          
+        />
+      )}
+    </>
   );
 }
