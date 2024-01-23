@@ -51,6 +51,7 @@ export default function DyFormRender({ fields }: { fields: any }) {
                     return (
                         <div key={fieldSlug} style={{ padding: "10px" }}>
                             {/* <DynamicForm fieldSlug={fieldSlug} fieldValue={fieldValue} /> */}
+                            
                             {/* @ts-ignore */}
                             {`${fieldValue?.label}`}
                             <button onClick={() => openModal(fieldSlug)}>Edit</button>

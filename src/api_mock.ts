@@ -76,6 +76,12 @@ export const allModels = [
         name: 'Profile Model',
         href: '/dashboard/config/models/profile',
         slug: 'ProfileModel'
+    },
+    {
+        id:3,
+        name: 'Add Model',
+        href: '/dashboard/config/models/addnew',
+        slug: 'addModel'
     }
 ]
 
@@ -281,4 +287,15 @@ export const ProfileModel =
             "label": "Requested Profile"
         }
     },
+}
+
+
+export const addModel =
+{
+    id: 3,
+    model_name: "add new Model",
+    model_slug: "addModel",
+    fields: {
+      
+    }
 }

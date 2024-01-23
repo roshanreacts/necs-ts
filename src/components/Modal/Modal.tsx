@@ -25,7 +25,13 @@ const ModalContent = styled.div`
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   overflow: scroll;
-  height: 500px;
+  height: 350px;
+  min-width:300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+}
 `;
 
 const closeButtonCss = css`

@@ -45,8 +45,10 @@ export default function Models() {
         <div className="config__models">
             <h2>Models</h2>
             <div className="model_list_data" style={{ display: "flex" }}>
+
                 {/* @ts-ignore */}
-                {/* <AccordionModels isOpen={true} items={allModels} setSelectSlugOption={setSelectSlugOption} /> */}
+                <AccordionModels isOpen={true} items={allModels} setSelectSlugOption={setSelectSlugOption} />
+                
                 <div className="Table__data" style={{ width: '100%', height: '90vh', marginLeft: "35px" }}>
                     {sendData &&
                         <TableComponent selectSlugOption={selectSlugOption} tableData={tableData} />

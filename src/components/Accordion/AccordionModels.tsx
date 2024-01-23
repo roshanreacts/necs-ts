@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
 import styled from '@emotion/styled'
-import { FieldType, ModelType, ModelsOptionsType, ProfileModel, UserModel } from '@/api_mock';
+import { FieldType, ModelType, ModelsOptionsType, ProfileModel, UserModel, addModel } from '@/api_mock';
 import DyFormRender from '@/containers/DyFormRender/DyFormRender';
 import { HttpResponse, http } from 'msw';
 import Modal from '../Modal/Modal';
+import TableComponent from '../Table/TableComponent';
 
 
 type AccordionType = {
@@ -23,8 +24,11 @@ export default function AccordionModels({ items, isOpen, setSelectSlugOption }: 
             const users = http.get('https://api.example.com/user', (): any => {
                 if (fieldSlug === "UserModel") {
                     return HttpResponse.json(UserModel)
-                } else {
+                } else if(fieldSlug==="ProfileModel") {
                     return HttpResponse.json(ProfileModel)
+                }
+                else{
+                    return HttpResponse.json(addModel)
                 }
             })
 
@@ -47,15 +51,21 @@ export default function AccordionModels({ items, isOpen, setSelectSlugOption }: 
                                 <div style={{ display: "flex", flexDirection: "column", boxShadow: "2px 2px 2px #f4f4f4" }} key={index}>
                                     <div>
                                         <DyFormRender fields={field} />
+                                        {/* <TableComponent selectSlugOption={[field]} /> */}
                                     </div>
                                 </div>
                             )
                         })}
+                        {/* <TableComponent selectSlugOption={setSelectSlugOption}/> */}
+                        
                     </AccordionContent>
                 </AccordionItem>
             ))
             }
+             
+            
         </AccordionContainer >
+
     )
 }
 
