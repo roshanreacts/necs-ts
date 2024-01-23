@@ -43,7 +43,7 @@ export default function Models() {
 
     return (
         <div className="config__models">
-            <h2>Models</h2>
+            <h2>Models</h2><h4>{selectSlugOption}</h4>
             <div className="model_list_data" style={{ display: "flex" }}>
 
                 {/* @ts-ignore */}
