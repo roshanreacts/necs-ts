@@ -18,7 +18,7 @@ export default function AccordionModels({ items, isOpen, setSelectSlugOption }: 
     const [data, setData] = useState<ModelType | any>(null);
 
     const handleAccordionClick = (index: number, fieldSlug: string) => {
-        setOpenIndex((prevIndex: number) => (prevIndex === index ? null : index));
+        //setOpenIndex((prevIndex: number) => (prevIndex === index ? null : index));
 
         (async () => {
             const users = http.get('https://api.example.com/user', (): any => {

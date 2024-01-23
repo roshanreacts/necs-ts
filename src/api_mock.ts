@@ -220,6 +220,11 @@ export const ProfileModel =
             "isEditable": false,
             "label": "Company Name"
         },
+        "address": {
+            "type": "string",
+            "isEditable": false,
+            "label": "Address"
+        },
         "email": {
             "type": "string",
             "require": true,

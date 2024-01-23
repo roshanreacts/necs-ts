@@ -105,7 +105,6 @@ export default function TableComponent({ selectSlugOption, tableData }: TableTyp
         rowSelection="multiple"
         onSelectionChanged={onSelectionChanged}
         onCellValueChanged={(event) => console.log(`New Cell Value: ${event.value}`)}
-        <Modal isOpen={isModalOpen} onClose={() => closeModal(fieldSlug)} fieldSlug={fieldSlug} fieldValue={fieldValue} />
       />
     </div>
     {isModalOpen && (
