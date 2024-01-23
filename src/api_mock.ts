@@ -16,7 +16,7 @@ export const ConfigOptions = [
     {
         id: 1,
         name: 'Users',
-        href: '/dashboard/config/users', 
+        href: '/dashboard/config/users',
         icon: FaUser
     },
     {
@@ -78,7 +78,7 @@ export const allModels = [
         slug: 'ProfileModel'
     },
     {
-        id:3,
+        id: 3,
         name: 'Add Model',
         href: '/dashboard/config/models/addnew',
         slug: 'addModel'
@@ -108,10 +108,10 @@ export const UserModel =
         "firstName": {
             "type": "string",
             "default": false,
-            "unique":false,
+            "unique": false,
             "isEditable": false,
             "label": "First Name",
-            "many":true,
+            "many": true,
             "fieldOptions": [{ "key": "USER", "value": "Adarsh" }, { "key": "ADMIN", "value": "Adarsh" }]
         },
         "lastName": {
@@ -134,7 +134,7 @@ export const UserModel =
         "password": {
             "type": "string",
             "bcrypt": true,
-            "rounds":"number",
+            "rounds": "number",
             "isEditable": false,
             "label": "Password"
         },
@@ -142,7 +142,7 @@ export const UserModel =
             "type": "string",
             "isEditable": false,
             "label": "Mobile",
-            "isCreatable":false
+            "isCreatable": false
         },
         "termsAndCondtions": {
             "type": "boolean",
@@ -202,52 +202,6 @@ export const ProfileModel =
     model_name: "Profile Model",
     model_slug: "profile",
     fields: {
-        "firstName": {
-            "type": "string",
-            "isEditable": false,
-            "default": false,
-            "unique":false,
-            "label": "First Name",
-            "fieldOptions": [{ "key": "USER", "value": "Adarsh" }, { "key": "ADMIN", "value": "Adarsh" }]
-        },
-        "lastName": {
-            "type": "string",
-            "isEditable": false,
-            "label": "Last Name"
-        },
-        "companyName": {
-            "type": "string",
-            "isEditable": false,
-            "label": "Company Name"
-        },
-        "address": {
-            "type": "string",
-            "isEditable": false,
-            "label": "Address"
-        },
-        "email": {
-            "type": "string",
-            "require": true,
-            "isEditable": false,
-            "label": "Email"
-        },
-        "password": {
-            "type": "string",
-            "bcrypt": true,
-            "isEditable": false,
-            "label": "Password"
-        },
-        "mobile": {
-            "type": "string",
-            "isEditable": false,
-            "label": "Mobile"
-        },
-        "termsAndCondtions": {
-            "type": "boolean",
-            "default": false,
-            "isEditable": false,
-            "label": "Terms And Condtions"
-        },
         "role": {
             "type": "enum",
             "enumType": "string",
@@ -301,6 +255,14 @@ export const addModel =
     model_name: "add new Model",
     model_slug: "addModel",
     fields: {
-      
+        "firstName": {
+            "type": "string",
+            "default": false,
+            "unique": false,
+            "isEditable": false,
+            "label": "First Name",
+            "many": true,
+            "fieldOptions": []
+        },
     }
 }
