@@ -5,6 +5,7 @@ import { AgGridReact } from 'ag-grid-react';
 import { http, HttpResponse } from 'msw';
 import { UserModel, ProfileModel } from '@/api_mock';
 import Modal from '../Modal/Modal';
+import Button from '../Button/Button';
 
 // interface TableColumnProps {
 //   headerName: String,
@@ -15,9 +16,15 @@ import Modal from '../Modal/Modal';
 type TableType = {
   selectSlugOption: any;
   tableData: any;
+  modelOptions?:any;
+  modelname?:any
 }
 
-export default function TableComponent({ selectSlugOption, tableData }: TableType) {
+export default function TableComponent({ selectSlugOption, tableData,modelOptions,modelname }: TableType) {
+  console.log("🚀 ~ TableComponent ~ modelname:", modelname)
+  console.log("🚀 ~ TableComponent ~ modelOptions:", modelOptions)
+  console.log("🚀 ~ TableComponent ~ tableData:", tableData)
+  
 
   const [rowData, setRowData] = useState([]);
   const [selectedRowData, setSelectedRowData] = useState(null);
@@ -90,13 +97,55 @@ export default function TableComponent({ selectSlugOption, tableData }: TableTyp
 
 
   function closeModal(): void {
+    
     setIsModalOpen(false);
   }
+  const addnewField=()=>{
+        
+    const newFieldValue = {
+      label: "",
+      type: "text",
+      isEditable: false,
+      required: false,
+      fieldOptions: [],
+      many: true,
+      unique: true,
+      default: false,
+  };
+    setSelectedRowData(newFieldValue)
+    setIsModalOpen(true);
+  }
+  const addNewModel=()=>{
+        
+    const newModelValues = {
+      modelName: "",
+      historyTracking:true,
+  };
+    setSelectedRowData(newModelValues)
+    setIsModalOpen(true);
+  }
+
+  const editHistory=()=>{
+    const editModelOptions={
+      modelName:modelname,
+      historyTracking:modelOptions.historyTracking
+    }
+    setSelectedRowData(editModelOptions)
+    setIsModalOpen(true);
+  }
+  
+
 
   return (
     <>
       
     <div className="ag-theme-quartz-light" style={{ width: '100%', height: '100%', padding: "0px" }}>
+      <div>
+      historyTracking: {modelOptions.historyTracking?"true":"false"}
+      <button onClick={editHistory} >edit</button>
+       </div> 
+      <button onClick={addnewField} >add new field</button>
+      <button onClick={addNewModel} >add new model</button>
       <AgGridReact
         rowData={rowData}
         rowStyle={{}}

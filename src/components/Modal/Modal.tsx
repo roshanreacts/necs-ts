@@ -37,12 +37,15 @@ const ModalContent = styled.div`
 const closeButtonCss = css`
     width: 100%;
     display: flex;
-    justify-content: end;`
+    justify-content: end;
+    align-items: flex-end
+    `
 const buttonStyleCss=css`
     display:flex;
     position:fixed;
     align-items:center;
     gap:5px;
+
 `
 
 export type ModalProps = {

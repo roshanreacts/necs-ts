@@ -30,7 +30,9 @@ export const User = mercury.createModel(
     //   enumType: "string",
     // },
   },
-  {}
+  {
+  historyTracking:true
+  }
 );
 
 declare module "@mercury-js/core" {

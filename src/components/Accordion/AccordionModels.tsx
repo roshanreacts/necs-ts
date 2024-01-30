@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import styled from '@emotion/styled'
-import { FieldType, ModelType, ModelsOptionsType, ProfileModel, UserModel, addModel } from '@/api_mock';
+import { FieldType, ModelType, ModelsOptionsType, ProfileModel, UserModel } from '@/api_mock';
 import DyFormRender from '@/containers/DyFormRender/DyFormRender';
 import { HttpResponse, http } from 'msw';
 import Modal from '../Modal/Modal';
@@ -27,9 +27,7 @@ export default function AccordionModels({ items, isOpen, setSelectSlugOption }: 
                 } else if(fieldSlug==="ProfileModel") {
                     return HttpResponse.json(ProfileModel)
                 }
-                else{
-                    return HttpResponse.json(addModel)
-                }
+               
             })
 
             // @ts-ignore

@@ -77,12 +77,7 @@ export const allModels = [
         href: '/dashboard/config/models/profile',
         slug: 'ProfileModel'
     },
-    {
-        id: 3,
-        name: 'Add Model',
-        href: '/dashboard/config/models/addnew',
-        slug: 'addModel'
-    }
+ 
 ]
 
 export type ModelType = {
@@ -167,7 +162,7 @@ export const UserModel =
         "isVerified": {
             "type": "boolean",
             "default": false,
-            "isEditable": false,
+            "isEditable": true,
             "label": "Is Verified"
         },
         "status": {
@@ -194,6 +189,9 @@ export const UserModel =
             "isCreatable": false,
         }
     },
+    options:{
+        historyTracking:true
+    }
 }
 
 export const ProfileModel =
@@ -246,23 +244,9 @@ export const ProfileModel =
             "label": "Requested Profile"
         }
     },
-}
-
-
-export const addModel =
-{
-    id: 3,
-    model_name: "add new Model",
-    model_slug: "addModel",
-    fields: {
-        "firstName": {
-            "type": "string",
-            "default": false,
-            "unique": false,
-            "isEditable": false,
-            "label": "First Name",
-            "many": true,
-            "fieldOptions": []
-        },
+    options:{
+        historyTracking:false
     }
 }
+
+
