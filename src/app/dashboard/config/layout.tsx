@@ -3,6 +3,8 @@ import ConfigContainer from "@/containers/ConfigContainer/ConfigContainer";
 import Link from "next/link";
 import React from "react";
 import styled from "@emotion/styled";
+import Breadcrumb from "@/components/Breadcrumb/Breadcrumb";
+import { css } from "@emotion/css";
 
 export default function ConfigLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -12,6 +14,7 @@ export default function ConfigLayout({ children }: { children: React.ReactNode }
         <ConfigContainer />
       </div>
       <div>
+       <Breadcrumb className={css({ margin: "10px" })} nodeRoots={'user model'} />
         {children}
       </div>
     </Layout>
