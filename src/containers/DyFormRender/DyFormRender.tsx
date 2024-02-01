@@ -1,4 +1,5 @@
 "use client";
+import { createRecord } from "@/app/actions";
 import Modal from "@/components/Modal/Modal";
 import { css } from "@emotion/css";
 import { startCase } from "lodash";
@@ -24,7 +25,6 @@ export default function DyFormRender({ fields }: { fields: any }) {
       }))
     );
   }, [fields]);
-  
 
   const addNewField = () => {
     const newFieldSlug = `newField${dynamicFields.length + 1}`;
@@ -32,7 +32,7 @@ export default function DyFormRender({ fields }: { fields: any }) {
       label: "",
       type: "text",
       isEditable: false,
-      bcrypt:false,
+      bcrypt: false,
       required: false,
       fieldOptions: [],
       many: true,
@@ -75,9 +75,16 @@ export default function DyFormRender({ fields }: { fields: any }) {
 interface DynamicFormProps {
   fieldSlug: string;
   fieldValue: any;
+  apiName?: string;
+  currentModel?:string
 }
 
-export function DynamicForm({ fieldSlug, fieldValue }: DynamicFormProps) {
+export function DynamicForm({
+  fieldSlug,
+  fieldValue,
+  apiName,
+  currentModel
+}: DynamicFormProps) {
   const {
     register,
     control,
@@ -87,16 +94,14 @@ export function DynamicForm({ fieldSlug, fieldValue }: DynamicFormProps) {
     formState: { errors },
   } = useForm<any>();
 
-
   const formStyles = css`
-  height:300px;
-  overflow:scroll;
-  `
+    height: 300px;
+    overflow: scroll;
+  `;
 
   const [dynamicFieldOptions, setDynamicFieldOptions] = React.useState<any[]>(
     []
   );
-
 
   const selectedType = watch("type") || fieldValue.type;
 
@@ -111,14 +116,43 @@ export function DynamicForm({ fieldSlug, fieldValue }: DynamicFormProps) {
     setValue(field, value);
   };
 
-  const onSubmit: SubmitHandler<any> = (data) => {
+  const onSubmit: SubmitHandler<any> = async(data) => {
+    console.log("apiname", apiName);
     console.log(`Form ${fieldSlug}, data:`, data);
+    console.log("currentModel",currentModel);
+    
+    if (apiName == "newModel") {
+      const createModelQuery = `mutation CreateModel($input: ModelInput!) {
+            createModel(input: $input) {
+              id
+            }
+          }`;
+
+    const createModelVariables = {input:{name:data.name,prefix:data.prefix,managed:data.managed }}
+    await createRecord({mutation:createModelQuery,variables:createModelVariables})
+    window.location.reload()
+    }
+    if(apiName=="newField"){
+
+        const createFieldMutation =`
+        mutation CreateModelField($input: ModelFieldInput!) {
+            createModelField(input: $input) {
+              id
+            }
+          }
+        `
+        data.model = currentModel
+        const createFieldVariables = {input:data}
+        await createRecord({mutation:createFieldMutation,variables:createFieldVariables})
+        console.log("🚀 ~ constonSubmit:SubmitHandler<any>=async ~ createFieldVariables:", createFieldVariables)
+        window.location.reload()
+        
+    }
   };
 
   React.useEffect(() => {
     setDynamicFieldOptions(fieldValue.fieldOptions || []);
   }, [fieldValue.fieldOptions]);
-  
 
   const addNewFieldOption = () => {
     setDynamicFieldOptions((prevOptions) => [
@@ -126,8 +160,6 @@ export function DynamicForm({ fieldSlug, fieldValue }: DynamicFormProps) {
       { key: "", value: "" },
     ]);
   };
-
- 
 
   const renderField = (
     field: any,
@@ -155,6 +187,39 @@ export function DynamicForm({ fieldSlug, fieldValue }: DynamicFormProps) {
           </>
         );
       case "modelName":
+        return (
+          <>
+            {startCase(field)}
+            <input
+              {...props}
+              onChange={(e) => setFieldValue(field, e.target.value)}
+            />
+          </>
+        );
+
+        
+        case "fieldName":
+        return (
+          <>
+            {startCase(field)}
+            <input
+              {...props}
+              onChange={(e) => setFieldValue(field, e.target.value)}
+            />
+          </>
+        );
+
+      case "name":
+        return (
+          <>
+            {startCase(field)}
+            <input
+              {...props}
+              onChange={(e) => setFieldValue(field, e.target.value)}
+            />
+          </>
+        );
+      case "prefix":
         return (
           <>
             {startCase(field)}
@@ -276,7 +341,7 @@ export function DynamicForm({ fieldSlug, fieldValue }: DynamicFormProps) {
               )}
           </div>
         );
-
+      case "managed":
       case "isEditable":
       case "unique":
       case "required":
@@ -318,7 +383,8 @@ export function DynamicForm({ fieldSlug, fieldValue }: DynamicFormProps) {
   };
 
   return (
-    <form className={formStyles}
+    <form
+      className={formStyles}
       key={fieldSlug + fieldValue}
       onSubmit={handleSubmit((data) => onSubmit(data))}
     >
@@ -341,7 +407,8 @@ export function DynamicForm({ fieldSlug, fieldValue }: DynamicFormProps) {
                     key === "many" ||
                     key === "ignoreGraphql" ||
                     key === "bcrypt" ||
-                    key === "historyTracking"
+                    key === "historyTracking" ||
+                    key === "managed"
                   ? {}
                   : { defaultValue: value }),
               },

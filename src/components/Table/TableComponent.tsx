@@ -29,6 +29,7 @@ export default function TableComponent({ selectSlugOption, tableData,modelOption
   const [rowData, setRowData] = useState([]);
   const [selectedRowData, setSelectedRowData] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [apiName,setApiName]=useState("")
 
   const ActionButton = () =>
   (
@@ -46,7 +47,7 @@ export default function TableComponent({ selectSlugOption, tableData,modelOption
 
   const [columnDefs, setColumnDefs] = useState([
     {
-      field: 'Label',
+      field: 'fieldName',
       width: "auto",
       // checkboxSelection: true,
     },
@@ -75,7 +76,7 @@ export default function TableComponent({ selectSlugOption, tableData,modelOption
       const field = tableData[fieldName];
 
       return {
-        Label: field?.label,
+        fieldName: field?.fieldName,
         Type: field?.type,
         IsEditable: field?.isEditable,
         option: "otopn",
@@ -103,26 +104,39 @@ export default function TableComponent({ selectSlugOption, tableData,modelOption
   const addnewField=()=>{
         
     const newFieldValue = {
-      label: "",
+      // label: "",
+      // type: "text",
+      // isEditable: false,
+      // required: false,
+      // fieldOptions: [],
+      // many: true,
+      // unique: true,
+      // default: false,
+      // model:modelname
+      fieldName: "",
       type: "text",
-      isEditable: false,
-      required: false,
-      fieldOptions: [],
-      many: true,
       unique: true,
-      default: false,
+      managed: false,
+      required: false,
+      default: "test",
+      
   };
     setSelectedRowData(newFieldValue)
+    setApiName("newField")
     setIsModalOpen(true);
+
   }
   const addNewModel=()=>{
         
     const newModelValues = {
-      modelName: "",
-      historyTracking:true,
+      name: "",
+      prefix: "",
+      managed: true,
   };
     setSelectedRowData(newModelValues)
+    setApiName("newModel")
     setIsModalOpen(true);
+    
   }
 
   const editHistory=()=>{
@@ -131,6 +145,7 @@ export default function TableComponent({ selectSlugOption, tableData,modelOption
       historyTracking:modelOptions.historyTracking
     }
     setSelectedRowData(editModelOptions)
+    setApiName("editModel")
     setIsModalOpen(true);
   }
   
@@ -141,8 +156,8 @@ export default function TableComponent({ selectSlugOption, tableData,modelOption
       
     <div className="ag-theme-quartz-light" style={{ width: '100%', height: '100%', padding: "0px" }}>
       <div>
-      historyTracking: {modelOptions.historyTracking?"true":"false"}
-      <button onClick={editHistory} >edit</button>
+      {/* managed: {modelOptions.managed?"true":"false"} */}
+      {/* <button onClick={editHistory} >edit</button> */}
        </div> 
       <button onClick={addnewField} >add new field</button>
       <button onClick={addNewModel} >add new model</button>
@@ -162,7 +177,8 @@ export default function TableComponent({ selectSlugOption, tableData,modelOption
           onClose={closeModal}
           fieldSlug={selectedRowData} 
           fieldValue={selectedRowData}
-          
+          apiName={apiName}
+          currentModel={modelname}
         />
       )}
     </>

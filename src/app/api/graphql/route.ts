@@ -1,6 +1,5 @@
 import { startServerAndCreateNextHandler } from "@as-integrations/next";
 import mercury from "@mercury-js/core";
-import redisCache from "@mercury-js/core/packages/redisCache";
 import { ApolloServer } from "@apollo/server";
 import { makeExecutableSchema } from "@graphql-tools/schema";
 import { applyMiddleware } from "graphql-middleware";
@@ -12,10 +11,8 @@ import "./cache";
 import "./models";
 import "./profiles";
 import "./hooks";
-
 mercury.connect(process.env.DB_URL || "mongodb://localhost:27017/mercury");
 
-mercury.package([redisCache()]);
 
 mercury.addGraphqlSchema(
   `

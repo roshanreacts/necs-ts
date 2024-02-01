@@ -54,9 +54,11 @@ export type ModalProps = {
   children?: React.ReactNode;
   fieldSlug:any;
   fieldValue:any
+  apiName?:string |any
+  currentModel?:string | any
 }
 
-const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children ,fieldSlug,fieldValue}) => {
+const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children ,fieldSlug,fieldValue,apiName,currentModel}) => {
   if (!isOpen) return null;
 
   return (
@@ -66,7 +68,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children ,fieldSlug,fiel
         <button className={buttonStyleCss} onClick={onClose}>Close <FaRegWindowClose/></button>
 
         </div>
-        <DynamicForm fieldSlug={fieldSlug} fieldValue={fieldValue} />
+        <DynamicForm fieldSlug={fieldSlug} fieldValue={fieldValue} apiName={apiName} currentModel={currentModel}/>
       </ModalContent>
     </ModalWrapper>
   );
