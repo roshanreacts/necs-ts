@@ -355,6 +355,7 @@ export function DynamicForm({
             <input
               type="checkbox"
               {...props}
+              defaultChecked={fieldSlug[field]}
               onChange={(e) => setBooleanValue(field, e.target.checked)}
             />
           </>
