@@ -16,25 +16,33 @@ import Button from '../Button/Button';
 type TableType = {
   selectSlugOption: any;
   tableData: any;
-  modelOptions?:any;
-  modelname?:any
+  modelOptions?: any;
+  modelname?: any
 }
 
-export default function TableComponent({ selectSlugOption, tableData,modelOptions,modelname }: TableType) {
-  console.log("🚀 ~ TableComponent ~ modelname:", modelname)
-  console.log("🚀 ~ TableComponent ~ modelOptions:", modelOptions)
-  console.log("🚀 ~ TableComponent ~ tableData:", tableData)
-  
+export default function TableComponent({ selectSlugOption, tableData, modelOptions, modelname }: TableType) {
+  // console.log("🚀 ~ TableComponent ~ modelname:", modelname)
+  // console.log("🚀 ~ TableComponent ~ modelOptions:", modelOptions)
+  // console.log("🚀 ~ TableComponent ~ tableData:", tableData)
+
 
   const [rowData, setRowData] = useState([]);
   const [selectedRowData, setSelectedRowData] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [apiName,setApiName]=useState("")
+  const [apiName, setApiName] = useState("")
 
-  const ActionButton = () =>
+  const ActionButton = ({ data }) =>
   (
-    <button onClick={(e) => console.log(e)}>Edit</button>
+    <button onClick={() => handleEdit(data)}>Edit</button>
   )
+
+  const handleEdit = (rowData) => {
+    // You can access the complete row data here and perform your edit logic
+    console.log("Edit button clicked. Row data:", rowData);
+    setSelectedRowData(rowData);
+    setIsModalOpen(true);
+    // Additional logic for editing the row...
+  };
 
   const IsEditableColumns = () => {
     const isEditableColumns = true
@@ -69,10 +77,7 @@ export default function TableComponent({ selectSlugOption, tableData,modelOption
   ]);
 
   useEffect(() => {
-    const newColumnDefs : any = Object.keys(tableData).map((fieldName: string) => {
-      console.log(tableData[fieldName]);
-      console.log(fieldName);
-
+    const newColumnDefs: any = Object.keys(tableData).map((fieldName: string) => {
       const field = tableData[fieldName];
 
       return {
@@ -88,21 +93,21 @@ export default function TableComponent({ selectSlugOption, tableData,modelOption
     setRowData(newColumnDefs);
   }, [tableData]);
 
-    const onSelectionChanged = (event: { api: { getSelectedRows: () => any; }; }) => {
-    const selectedRows = event.api.getSelectedRows();
-    if (selectedRows.length > 0) {
-      setSelectedRowData(selectedRows[0].data);
-      setIsModalOpen(true);
-    }
+  const onSelectionChanged = (event: { api: { getSelectedRows: () => any; }; }) => {
+    // const selectedRows = event.api.getSelectedRows();
+    // if (selectedRows.length > 0) {
+    // setSelectedRowData(selectedRows[0].data);
+    // setIsModalOpen(true);
+    // }
   };
 
 
   function closeModal(): void {
-    
+
     setIsModalOpen(false);
   }
-  const addnewField=()=>{
-        
+  const addnewField = () => {
+
     const newFieldValue = {
       // label: "",
       // type: "text",
@@ -119,63 +124,63 @@ export default function TableComponent({ selectSlugOption, tableData,modelOption
       managed: false,
       required: false,
       default: "test",
-      
-  };
+
+    };
     setSelectedRowData(newFieldValue)
     setApiName("newField")
     setIsModalOpen(true);
 
   }
-  const addNewModel=()=>{
-        
+  const addNewModel = () => {
+
     const newModelValues = {
       name: "",
       prefix: "",
       managed: true,
-  };
+    };
     setSelectedRowData(newModelValues)
     setApiName("newModel")
     setIsModalOpen(true);
-    
+
   }
 
-  const editHistory=()=>{
-    const editModelOptions={
-      modelName:modelname,
-      historyTracking:modelOptions.historyTracking
+  const editHistory = () => {
+    const editModelOptions = {
+      modelName: modelname,
+      historyTracking: modelOptions.historyTracking
     }
     setSelectedRowData(editModelOptions)
     setApiName("editModel")
     setIsModalOpen(true);
   }
-  
+
 
 
   return (
     <>
-      
-    <div className="ag-theme-quartz-light" style={{ width: '100%', height: '100%', padding: "0px" }}>
-      <div>
-      {/* managed: {modelOptions.managed?"true":"false"} */}
-      {/* <button onClick={editHistory} >edit</button> */}
-       </div> 
-      <button onClick={addnewField} >add new field</button>
-      <button onClick={addNewModel} >add new model</button>
-      <AgGridReact
-        rowData={rowData}
-        rowStyle={{}}
-        columnDefs={columnDefs}
-        pagination={true}
-        rowSelection="multiple"
-        onSelectionChanged={onSelectionChanged}
-        onCellValueChanged={(event) => console.log(`New Cell Value: ${event.value}`)}
-      />
-    </div>
-    {isModalOpen && (
+
+      <div className="ag-theme-quartz-light" style={{ width: '100%', height: '100%', padding: "0px" }}>
+        <div>
+          {/* managed: {modelOptions.managed?"true":"false"} */}
+          {/* <button onClick={editHistory} >edit</button> */}
+        </div>
+        <button onClick={addnewField} >add new field</button>
+        <button onClick={addNewModel} >add new model</button>
+        <AgGridReact
+          rowData={rowData}
+          rowStyle={{}}
+          columnDefs={columnDefs}
+          pagination={true}
+          rowSelection="multiple"
+          onSelectionChanged={onSelectionChanged}
+          onCellValueChanged={(event) => console.log(`New Cell Value: ${event.value}`)}
+        />
+      </div>
+      {isModalOpen && (
         <Modal
           isOpen={isModalOpen}
           onClose={closeModal}
-          fieldSlug={selectedRowData} 
+          fieldSlug={selectedRowData}
           fieldValue={selectedRowData}
           apiName={apiName}
           currentModel={modelname}

@@ -60,6 +60,8 @@ export type ModalProps = {
 
 const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children ,fieldSlug,fieldValue,apiName,currentModel}) => {
   if (!isOpen) return null;
+  console.log("modal data", fieldSlug);
+  
 
   return (
     <ModalWrapper>
