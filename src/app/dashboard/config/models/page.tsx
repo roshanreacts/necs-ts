@@ -22,6 +22,7 @@ export default function Models() {
     const [modalStates, setModalStates] = React.useState({});
     const [allModels, setAllModels] = React.useState<any[]>([]);
     const [loading, setLoading] = React.useState(true);
+    const [defaultModel, setDefaultModel] = React.useState(false);
 
 
 
@@ -48,44 +49,28 @@ export default function Models() {
                 const variables = {}
                 const models = await listModel(query, variables);
                 if (models?.data) {
-                    console.log("models.data.listModels.docs",models.data.listModels.docs[0]);
-                    
+                    // console.log("models.data.listModels.docs", models.data.listModels.docs[0]);
+
                     setAllModels(models.data.listModels.docs)
-                    handlemodel(models.data.listModels.docs[0])
+                    if (defaultModel === false) {
+                        handlemodel(models.data.listModels.docs[0])
+                        setDefaultModel(true)
+                    }
                     setLoading(false);
                 }
-
-
-
-                // const data = await users.resolver()?.json();
-                // console.log("🚀 ~ fetchData ~ data:", data);
-                // if (Object.keys(data.options).length > 0) {
-                //     setModelOptions(data.options);
-                // }
-
-                // if (Object.keys(data.fields).length > 0) {
-                //     setTableData(data.fields);
-                //     setSendData(true);
-                // }
-
-                // //model_slug
-                // if (Object.keys(data.model_slug)) {
-                //     setmodelName(data.model_slug);
-                // }
-
             } catch (error) {
                 console.error("Error fetching data:", error);
             }
         };
         fetchData();
-    }, [selectSlugOption, modelName]);
+    }, [selectSlugOption, modelName, defaultModel]);
 
     useEffect(() => {
         console.log("modelfieldss", modelFields)
     }, [modelFields])
     const handlemodel = async (e: any) => {
         // setLoading(true)
-        console.log("yahs e", e);
+        // console.log("yahs e", e);
         const fieldsQuery = `query Docs($where: whereModelFieldInput) {
         listModelFields(where: $where) {
           docs {
@@ -99,16 +84,16 @@ export default function Models() {
           }
         }
       }`
-      const modelName = e.id?e.id:e.target.value
-      console.log("🚀 ~ handlemodel ~ modelName:", modelName)
+        const modelName = e.id ? e.id : e.target.value
+        console.log("🚀 ~ handlemodel ~ modelName:", modelName)
 
-        const fieldvariables = { where: { model: { is: modelName} } }
+        const fieldvariables = { where: { model: { is: modelName } } }
         const modelFields = await listFields({ query: fieldsQuery, variables: fieldvariables })
         console.log("🚀 ~ fetchData ~ modelFields:", modelFields.data.listModelFields.docs)
         setModelFields(modelFields.data.listModelFields.docs)
-console.log("eid",e.id);
+        // console.log("eid", e.id);
 
-        const selectedModelName = e?.target?.options[e.target.selectedIndex].text?e.target.options[e.target.selectedIndex].text:e.name; // Get the selected model name
+        const selectedModelName = e?.target?.options[e.target.selectedIndex].text ? e.target.options[e.target.selectedIndex].text : e.name; // Get the selected model name
 
 
         setSelectSlugOption(selectedModelName)
@@ -133,7 +118,7 @@ console.log("eid",e.id);
         <option value="ProfileModel">ProfileModel</option> */}
 
                 {allModels && allModels.map((model, index) => (
-                    <option key={index} value={model.id} >{model.name}</option>
+                    <option key={index} value={model.id}>{model.name}</option>
                 ))}
             </select>
 
