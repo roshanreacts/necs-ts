@@ -38,6 +38,7 @@ export default function TableComponent({ selectSlugOption, tableData, modelOptio
 
   const handleEdit = (rowData) => {
     // You can access the complete row data here and perform your edit logic
+    // rowData.managed=true
     console.log("Edit button clicked. Row data:", rowData);
     setSelectedRowData(rowData);
     setIsModalOpen(true);
@@ -83,7 +84,11 @@ export default function TableComponent({ selectSlugOption, tableData, modelOptio
       return {
         fieldName: field?.fieldName,
         Type: field?.type,
-        IsEditable: field?.isEditable,
+        type: field?.type,
+        managed: field?.managed,
+        unique: field?.unique,
+        required: field?.required,
+        default: field?.default,
         option: "otopn",
         Action: true,
         data: field
@@ -158,25 +163,25 @@ export default function TableComponent({ selectSlugOption, tableData, modelOptio
 
   return (
     <>
-
-      <div className="ag-theme-quartz-light" style={{ width: '100%', height: '100%', padding: "0px" }}>
-        <div>
-          {/* managed: {modelOptions.managed?"true":"false"} */}
-          {/* <button onClick={editHistory} >edit</button> */}
-        </div>
-        <button onClick={addnewField} >add new field</button>
-        <button onClick={addNewModel} >add new model</button>
-        <AgGridReact
-          rowData={rowData}
-          rowStyle={{}}
-          columnDefs={columnDefs}
-          pagination={true}
-          rowSelection="multiple"
-          onSelectionChanged={onSelectionChanged}
-          onCellValueChanged={(event) => console.log(`New Cell Value: ${event.value}`)}
-        />
-      </div>
-      {isModalOpen && (
+      
+    <div className="ag-theme-quartz-light" style={{ width: '100%', height: '100%', padding: "0px" }}>
+      <div>
+      {/* managed: {modelOptions.managed?"true":"false"} */}
+      <button onClick={editHistory} >edit model</button>
+       </div> 
+      <button onClick={addnewField} >add new field</button>
+      <button onClick={addNewModel} >add new model</button>
+      <AgGridReact
+        rowData={rowData}
+        rowStyle={{}}
+        columnDefs={columnDefs}
+        pagination={true}
+        rowSelection="multiple"
+        onSelectionChanged={onSelectionChanged}
+        onCellValueChanged={(event) => console.log(`New Cell Value: ${event.value}`)}
+      />
+    </div>
+    {isModalOpen && (
         <Modal
           isOpen={isModalOpen}
           onClose={closeModal}

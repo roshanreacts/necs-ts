@@ -48,7 +48,10 @@ export default function Models() {
                 const variables = {}
                 const models = await listModel(query, variables);
                 if (models?.data) {
+                    console.log("models.data.listModels.docs",models.data.listModels.docs[0]);
+                    
                     setAllModels(models.data.listModels.docs)
+                    handlemodel(models.data.listModels.docs[0])
                     setLoading(false);
                 }
 
@@ -82,27 +85,33 @@ export default function Models() {
     }, [modelFields])
     const handlemodel = async (e: any) => {
         // setLoading(true)
-        // console.log("yahs e", e.target.value);
+        console.log("yahs e", e);
         const fieldsQuery = `query Docs($where: whereModelFieldInput) {
         listModelFields(where: $where) {
           docs {
             id
             fieldName
             type
+            managed
+            required
+            unique
           }
         }
       }`
+      const modelName = e.id?e.id:e.target.value
+      console.log("🚀 ~ handlemodel ~ modelName:", modelName)
 
-        const fieldvariables = { where: { model: { is: e.target.value } } }
+        const fieldvariables = { where: { model: { is: modelName} } }
         const modelFields = await listFields({ query: fieldsQuery, variables: fieldvariables })
         console.log("🚀 ~ fetchData ~ modelFields:", modelFields.data.listModelFields.docs)
         setModelFields(modelFields.data.listModelFields.docs)
+console.log("eid",e.id);
 
-        const selectedModelName = e.target.options[e.target.selectedIndex].text; // Get the selected model name
+        const selectedModelName = e?.target?.options[e.target.selectedIndex].text?e.target.options[e.target.selectedIndex].text:e.name; // Get the selected model name
 
 
         setSelectSlugOption(selectedModelName)
-        setmodelName(e.target.value)
+        setmodelName(modelName)
         // console.log("🚀 ~ handlemodel ~ selectedModelName:", selectedModelName)
 
         //  setLoading(false)
