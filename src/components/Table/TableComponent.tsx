@@ -23,7 +23,7 @@ type TableType = {
 export default function TableComponent({ selectSlugOption, tableData, modelOptions, modelname }: TableType) {
   // console.log("🚀 ~ TableComponent ~ modelname:", modelname)
   // console.log("🚀 ~ TableComponent ~ modelOptions:", modelOptions)
-  // console.log("🚀 ~ TableComponent ~ tableData:", tableData)
+  console.log("🚀 ~ TableComponent ~ tableData:", tableData)
 
 
   const [rowData, setRowData] = useState([]);
@@ -40,7 +40,9 @@ export default function TableComponent({ selectSlugOption, tableData, modelOptio
     // You can access the complete row data here and perform your edit logic
     // rowData.managed=true
     console.log("Edit button clicked. Row data:", rowData);
+    
     setSelectedRowData(rowData);
+    setApiName("editField")
     setIsModalOpen(true);
     // Additional logic for editing the row...
   };
@@ -61,7 +63,7 @@ export default function TableComponent({ selectSlugOption, tableData, modelOptio
       // checkboxSelection: true,
     },
     {
-      field: 'Type',
+      field: 'type',
       width: "auto",
       // checkboxSelection: true,
     },
@@ -80,10 +82,13 @@ export default function TableComponent({ selectSlugOption, tableData, modelOptio
   useEffect(() => {
     const newColumnDefs: any = Object.keys(tableData).map((fieldName: string) => {
       const field = tableData[fieldName];
-
+      console.log("🚀 ~ constnewColumnDefs:any=Object.keys ~ field:", field)
+      
       return {
+        id:field?.data?.id,
+        model:modelname,
         fieldName: field?.fieldName,
-        Type: field?.type,
+        // Type: field?.type,
         type: field?.type,
         managed: field?.managed,
         unique: field?.unique,

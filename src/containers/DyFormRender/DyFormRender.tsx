@@ -1,5 +1,5 @@
 "use client";
-import { createRecord } from "@/app/actions";
+import { createRecord, updateRecord } from "@/app/actions";
 import Modal from "@/components/Modal/Modal";
 import { css } from "@emotion/css";
 import { startCase } from "lodash";
@@ -117,10 +117,13 @@ export function DynamicForm({
   };
 
   const onSubmit: SubmitHandler<any> = async(data) => {
+    console.log("fslug",fieldSlug);
+    
     console.log("apiname", apiName);
     console.log(`Form ${fieldSlug}, data:`, data);
     console.log("currentModel",currentModel);
     
+
     if (apiName == "newModel") {
       const createModelQuery = `mutation CreateModel($input: ModelInput!) {
             createModel(input: $input) {
@@ -147,6 +150,34 @@ export function DynamicForm({
         console.log("🚀 ~ constonSubmit:SubmitHandler<any>=async ~ createFieldVariables:", createFieldVariables)
         window.location.reload()
         
+    }
+    if(apiName=="editField"){
+        console.log("yash");
+      data.id = fieldSlug?.data.id 
+      data.model = currentModel
+      const updatefieldMutation = `mutation UpdateModelField($input: updateModelFieldInput!) {
+        updateModelField(input: $input) {
+          id
+        }
+      }`
+      const propertiesToRemove = ["Action", "data", "option"];
+
+      const filteredData = Object.fromEntries(
+        Object.entries(data).filter(([key]) => !propertiesToRemove.includes(key))
+        
+      );
+      console.log("🚀 ~ constonSubmit:SubmitHandler<any>=async ~ filteredData:", filteredData)
+
+      const updateFieldVariables = {input:filteredData}
+
+      console.log("🚀 ~ constonSubmit:SubmitHandler<any>=async ~ updateFieldVariables:", updateFieldVariables)
+      await updateRecord({mutation:updatefieldMutation,variables:updateFieldVariables})
+      window.location.reload()
+
+      
+
+      // Create a new object without the specified properties
+      
     }
   };
 
@@ -176,6 +207,7 @@ export function DynamicForm({
     ];
 
     switch (field) {
+      
       case "label":
         return (
           <>

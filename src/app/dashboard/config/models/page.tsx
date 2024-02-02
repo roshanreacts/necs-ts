@@ -95,6 +95,7 @@ export default function Models() {
             managed
             required
             unique
+            default
           }
         }
       }`
