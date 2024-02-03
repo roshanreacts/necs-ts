@@ -152,7 +152,6 @@ export function DynamicForm({
         
     }
     if(apiName=="editField"){
-        console.log("yash");
       data.id = fieldSlug?.data.id 
       data.model = currentModel
       const updatefieldMutation = `mutation UpdateModelField($input: updateModelFieldInput!) {

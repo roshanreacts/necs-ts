@@ -18,11 +18,12 @@ type TableType = {
   tableData: any;
   modelOptions?: any;
   modelname?: any
+  
 }
 
 export default function TableComponent({ selectSlugOption, tableData, modelOptions, modelname }: TableType) {
   // console.log("🚀 ~ TableComponent ~ modelname:", modelname)
-  // console.log("🚀 ~ TableComponent ~ modelOptions:", modelOptions)
+  console.log("🚀 ~ TableComponent ~ modelOptions:", modelOptions)
   console.log("🚀 ~ TableComponent ~ tableData:", tableData)
 
 
@@ -156,7 +157,7 @@ export default function TableComponent({ selectSlugOption, tableData, modelOptio
 
   const editHistory = () => {
     const editModelOptions = {
-      modelName: modelname,
+      name: modelname,
       historyTracking: modelOptions.historyTracking
     }
     setSelectedRowData(editModelOptions)

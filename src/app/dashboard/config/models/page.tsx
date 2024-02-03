@@ -84,14 +84,13 @@ export default function Models() {
           }
         }
       }`
-        const modelName = e.id ? e.id : e.target.value
-        console.log("🚀 ~ handlemodel ~ modelName:", modelName)
+      const modelName = e.target?.value?e.target.value:e.id
+      console.log("🚀 ~ handlemodel ~ modelName:", modelName)
 
         const fieldvariables = { where: { model: { is: modelName } } }
         const modelFields = await listFields({ query: fieldsQuery, variables: fieldvariables })
         console.log("🚀 ~ fetchData ~ modelFields:", modelFields.data.listModelFields.docs)
         setModelFields(modelFields.data.listModelFields.docs)
-        // console.log("eid", e.id);
 
         const selectedModelName = e?.target?.options[e.target.selectedIndex].text ? e.target.options[e.target.selectedIndex].text : e.name; // Get the selected model name
 
