@@ -56,9 +56,10 @@ export type ModalProps = {
   fieldValue:any
   apiName?:string |any
   currentModel?:string | any
+  currentModelName?:string|any
 }
 
-const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children ,fieldSlug,fieldValue,apiName,currentModel}) => {
+const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children ,fieldSlug,fieldValue,apiName,currentModel,currentModelName}) => {
   if (!isOpen) return null;
   console.log("modal data", fieldSlug);
   
@@ -70,7 +71,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children ,fieldSlug,fiel
         <button className={buttonStyleCss} onClick={onClose}>Close <FaRegWindowClose/></button>
 
         </div>
-        <DynamicForm fieldSlug={fieldSlug} fieldValue={fieldValue} apiName={apiName} currentModel={currentModel}/>
+        <DynamicForm fieldSlug={fieldSlug} fieldValue={fieldValue} apiName={apiName} currentModel={currentModel} currentModelName={currentModelName}/>
       </ModalContent>
     </ModalWrapper>
   );

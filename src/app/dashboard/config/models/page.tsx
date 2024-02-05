@@ -25,7 +25,6 @@ export default function Models() {
     const [defaultModel, setDefaultModel] = React.useState(false);
 
 
-
     const openModal = (fieldSlug: any) => {
         setModalStates((prevStates) => ({ ...prevStates, [fieldSlug]: true }));
     };

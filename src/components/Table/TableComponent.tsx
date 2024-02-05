@@ -7,6 +7,7 @@ import { UserModel, ProfileModel } from '@/api_mock';
 import Modal from '../Modal/Modal';
 import Button from '../Button/Button';
 import { useRouter } from 'next/navigation';
+import { deleteRecord, listModel } from '@/app/actions';
 
 // interface TableColumnProps {
 //   headerName: String,
@@ -19,12 +20,14 @@ type TableType = {
   tableData: any;
   modelOptions?: any;
   modelname?: any
-  type?: string
+  type?: string;
+  currentModelName?:any
+  
 }
 
-export default function TableComponent({ selectSlugOption, tableData, modelOptions, modelname, type }: TableType) {
+export default function TableComponent({ selectSlugOption, tableData, modelOptions, modelname,currentModelName, type }: TableType) {
   // console.log("🚀 ~ TableComponent ~ modelname:", modelname)
-  // console.log("🚀 ~ TableComponent ~ modelOptions:", modelOptions)
+  console.log("🚀 ~ TableComponent ~ modelOptions:", modelOptions)
   console.log("🚀 ~ TableComponent ~ tableData:", tableData)
 
   const [rowData, setRowData] = useState([]);
@@ -55,6 +58,34 @@ export default function TableComponent({ selectSlugOption, tableData, modelOptio
     setIsModalOpen(true);
     // Additional logic for editing the row...
   };
+
+  const deleteFieldButton = ({ data }) =>
+  (
+    <button onClick={() => handleDeleteField(data)}>Delete</button>
+  )
+
+  const handleDeleteField =async (rowData)=>{
+    
+    const FieldId = rowData.data.id
+    console.log("🚀 ~ handleDeleteField ~ rowData:", rowData)
+    const mutateDeleteQuery = `
+    mutation DeleteModelField($deleteModelFieldId: ID!) {
+      deleteModelField(id: $deleteModelFieldId)
+    }
+    `
+    
+    const DeleteVariable = {deleteModelFieldId:FieldId}
+    await deleteRecord({mutation:mutateDeleteQuery,variables:DeleteVariable})
+    if(rowData.managed){
+      alert("field deleted successfully")
+      window.location.reload()
+    }
+    else{
+      alert("cannot modify")
+    }
+    
+    
+  }
 
   const IsEditableColumns = () => {
     const isEditableColumns = true
@@ -111,13 +142,17 @@ export default function TableComponent({ selectSlugOption, tableData, modelOptio
         width: "auto",
         cellRenderer: ActionButton,
       },
+      {
+        field: 'Delete',
+        width: "auto",
+        cellRenderer: deleteFieldButton,
+      },
       // hide this column
       {
         field: 'Data',
         hide: true
       }
     ]);
-
   useEffect(() => {
     let newColumnDefs: any;
     if (type === "MODEL_LIST") {
@@ -174,6 +209,7 @@ export default function TableComponent({ selectSlugOption, tableData, modelOptio
     setRowData(newColumnDefs);
   }, [tableData]);
 
+  console.log("rd",rowData);
   const onSelectionChanged = (event: { api: { getSelectedRows: () => any; }; }) => {
     // const selectedRows = event.api.getSelectedRows();
     // if (selectedRows.length > 0) {
@@ -215,6 +251,7 @@ export default function TableComponent({ selectSlugOption, tableData, modelOptio
   const addNewModel = () => {
 
     const newModelValues = {
+      label:"",
       name: "",
       prefix: "",
       managed: true,
@@ -225,14 +262,50 @@ export default function TableComponent({ selectSlugOption, tableData, modelOptio
 
   }
 
-  const editHistory = () => {
-    const editModelOptions = {
-      modelName: modelname,
-      historyTracking: modelOptions.historyTracking
+  const editModel = async() => {
+
+    const modelQuery =`
+    query Docs($where: whereModelInput) {
+      listModels(where: $where) {
+        docs {
+          id
+          name
+          prefix
+          managed
+          label
+        }
+      }
     }
-    setSelectedRowData(editModelOptions)
+    ` 
+    const modelVariables = {where:{id:{is:modelname}}}
+    const modelDetails = await listModel(modelQuery,modelVariables)
+    const modelData = modelDetails.data.listModels.docs[0]
+    console.log("🚀 ~ editHistory ~ modelData:", modelData)
+
+
+    const editModelData = {
+      name: modelData.name,
+      prefix:modelData.prefix,
+      managed: modelData.managed,
+      label:modelData.label
+    }
+    setSelectedRowData(editModelData)
     setApiName("editModel")
     setIsModalOpen(true);
+  }
+  const deleteModel = async()=>{
+    console.log("🚀 ~ deleteModel ~ modelname:", modelname)
+
+    const deleteModelQuery = `mutation DeleteModel($deleteModelId: ID!) {
+                                deleteModel(id: $deleteModelId)
+                              }`
+    const deleteModelVariable = {deleteModelId:modelname}
+    
+    console.log("🚀 ~ deleteModel ~ deleteModelVariable:", deleteModelVariable)
+
+    await deleteRecord({mutation:deleteModelQuery,variables:deleteModelVariable})
+    alert("model deleted successfully")
+    window.location.reload()
   }
 
 
@@ -244,7 +317,7 @@ export default function TableComponent({ selectSlugOption, tableData, modelOptio
         {type !== "MODEL_LIST" ?
           <>
             <div>
-              <button onClick={editHistory} >edit model</button>
+              <button onClick={editModel} >edit model</button>
             </div>
             <button onClick={addnewField} >add new field</button>
           </>
@@ -271,6 +344,8 @@ export default function TableComponent({ selectSlugOption, tableData, modelOptio
           fieldValue={selectedRowData}
           apiName={apiName}
           currentModel={modelname}
+          currentModelName={currentModelName}
+
         />
       )}
     </>
