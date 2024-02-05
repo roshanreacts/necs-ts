@@ -88,7 +88,7 @@ export default function Model() {
 
                 <div
                     className="Table__data"
-                    style={{ width: "100%", height: "50vh", marginLeft: "35px" }}
+                    style={{ width: "100%", height: "50vh", marginLeft: "35px", zIndex: '-1' }}
                 >
                     <TableComponent
                         selectSlugOption={{}}

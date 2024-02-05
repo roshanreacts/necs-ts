@@ -50,8 +50,14 @@ export default function TableComponent({ selectSlugOption, tableData, modelOptio
 
 
   const ModelOptionsEditAction = ({ data }: any) => (
-    <button>Edit</button>
+    <button onClick={() => handleModalOptionEdit(data)}>Edit</button>
   )
+
+  const handleModalOptionEdit = ({ rowData }: any) => {
+    setSelectedRowData(rowData);
+    // setApiName("editField")
+    // setIsModalOpen(true);
+  }
   const handleEdit = (rowData) => {
     // You can access the complete row data here and perform your edit logic
     // rowData.managed=true
