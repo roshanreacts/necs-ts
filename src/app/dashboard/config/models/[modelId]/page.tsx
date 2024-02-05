@@ -9,6 +9,7 @@ export default function Model() {
     const [data, setData] = useState<any[]>([]);
     const [modelFields, setModelFields] = useState<any[]>([]);
     const [loading, setLoading] = useState(false);
+    const [modelOptions, setModelOptions] = useState<any[]>([]);
 
     const { modelId } = useParams();
 
@@ -33,10 +34,27 @@ export default function Model() {
 
         const fieldvariables = { where: { model: { is: modelId } } }
         const modelFields = await listFields({ query: fieldsQuery, variables: fieldvariables })
-        console.log("🚀 ~ fetchData ~ modelFields:", modelFields.data.listModelFields.docs)
+        console.log("🚀 ~ fetchData ~ modelFields:", modelFields.data.listModelFields?.docs)
         setModelFields(modelFields.data.listModelFields.docs)
 
         // console.log("🚀 ~ handlemodel ~ selectedModelName:", selectedModelName)
+
+        const modelOptionsQuery = `query Docs($where: whereModelOptionInput) {
+            listModelOptions(where: $where) {
+              docs {
+                keyName
+                managed
+                name
+                type
+                value
+              }
+            }
+          }`
+        const modelOptionsVariable = { where: { model: { is: modelId } } }
+
+        const modelOptionsData = await listFields({ query: modelOptionsQuery, variables: modelOptionsVariable })
+        console.log("🚀 ~ handlemodel ~ modelOptions:", modelOptionsData.data?.listModelOptions?.docs)
+        setModelOptions(modelOptionsData.data?.listModelOptions?.docs)
 
         setLoading(false)
     }
@@ -46,21 +64,38 @@ export default function Model() {
     }
     return (
         <div>
-            <div className="model_list_data" style={{ display: "flex" }}>
+            <div className="model_list_data" style={{ display: "flex", flexDirection: "column" }}>
                 {/* @ts-ignore */}
                 {/* <AccordionModels isOpen={true} items={allModels} setSelectSlugOption={setSelectSlugOption} /> */}
                 {/* add a select option */}
-
+                <h3 style={{ margin: "auto", marginTop: "60px", marginBottom: "20px" }}>Model Fields</h3>
                 <div
                     className="Table__data"
-                    style={{ width: "100%", height: "90vh", marginLeft: "35px" }}
+                    style={{ width: "100%", height: "50vh", marginLeft: "35px" }}
                 >
                     {/* {sendData  &&( */}
                     <TableComponent
                         selectSlugOption={{}}
                         tableData={modelFields}
                         modelOptions={''}
-                        modelname={''}
+                        modelname={modelId}
+                    />
+                    {/* )} */}
+                </div>
+
+
+                <h3 style={{ margin: "auto", marginTop: "60px", marginBottom: "20px" }}>Model Options</h3>
+
+                <div
+                    className="Table__data"
+                    style={{ width: "100%", height: "50vh", marginLeft: "35px" }}
+                >
+                    <TableComponent
+                        selectSlugOption={{}}
+                        tableData={modelOptions}
+                        modelOptions={''}
+                        modelname={modelId}
+                        type="MODEL_OPTIONS"
                     />
                     {/* )} */}
                 </div>
