@@ -25,7 +25,6 @@ export default function Models() {
     const [defaultModel, setDefaultModel] = React.useState(false);
 
 
-
     const openModal = (fieldSlug: any) => {
         setModalStates((prevStates) => ({ ...prevStates, [fieldSlug]: true }));
     };
@@ -84,6 +83,7 @@ export default function Models() {
           }
         }
       }`
+
       const modelName = e.target?.value?e.target.value:e.id
       console.log("🚀 ~ handlemodel ~ modelName:", modelName)
 
@@ -94,12 +94,31 @@ export default function Models() {
 
         const selectedModelName = e?.target?.options[e.target.selectedIndex].text ? e.target.options[e.target.selectedIndex].text : e.name; // Get the selected model name
 
-
+       
         setSelectSlugOption(selectedModelName)
         setmodelName(modelName)
         // console.log("🚀 ~ handlemodel ~ selectedModelName:", selectedModelName)
 
         //  setLoading(false)
+      const modelOptionsQuery = `query Docs($where: whereModelOptionInput) {
+        listModelOptions(where: $where) {
+          docs {
+            keyName
+            managed
+            name
+            type
+            value
+          }
+        }
+      }`
+      const modelOptionsVariable = {where:{model:{is:modelName}}}
+
+      const modelOptionsData = await listFields({query:modelOptionsQuery,variables:modelOptionsVariable})
+      console.log("🚀 ~ handlemodel ~ modelOptions:", modelOptions)
+      setModelOptions(modelOptionsData)
+
+
+
     }
     if (loading) {
         return <div>Loading...</div>;
@@ -134,8 +153,9 @@ export default function Models() {
                     <TableComponent
                         selectSlugOption={selectSlugOption}
                         tableData={modelFields}
-                        modelOptions={modelOptions}
+                    
                         modelname={modelName}
+                        currentModelName={selectSlugOption}
                     />
                     {/* )} */}
                 </div>

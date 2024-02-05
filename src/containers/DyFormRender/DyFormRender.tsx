@@ -76,14 +76,18 @@ interface DynamicFormProps {
   fieldSlug: string;
   fieldValue: any;
   apiName?: string;
-  currentModel?:string
+  currentModel?: string;
+  currentModelName?:string
+
 }
 
 export function DynamicForm({
   fieldSlug,
   fieldValue,
   apiName,
-  currentModel
+  currentModel,
+  currentModelName
+
 }: DynamicFormProps) {
   const {
     register,
@@ -116,13 +120,12 @@ export function DynamicForm({
     setValue(field, value);
   };
 
-  const onSubmit: SubmitHandler<any> = async(data) => {
-    console.log("fslug",fieldSlug);
-    
+  const onSubmit: SubmitHandler<any> = async (data) => {
+    console.log("fslug", fieldSlug);
+
     console.log("apiname", apiName);
     console.log(`Form ${fieldSlug}, data:`, data);
-    console.log("currentModel",currentModel);
-    
+    console.log("currentModel", currentModel);
 
     if (apiName == "newModel") {
       const createModelQuery = `mutation CreateModel($input: ModelInput!) {
@@ -131,51 +134,96 @@ export function DynamicForm({
             }
           }`;
 
-    const createModelVariables = {input:{name:data.name,prefix:data.prefix,managed:data.managed }}
-    await createRecord({mutation:createModelQuery,variables:createModelVariables})
-    window.location.reload()
+      const createModelVariables = {
+        input: data
+      };
+      await createRecord({
+        mutation: createModelQuery,
+        variables: createModelVariables,
+      });
+      window.location.reload();
     }
-    if(apiName=="newField"){
-
-        const createFieldMutation =`
+    if (apiName == "newField") {
+      console.log("nfld",currentModelName);
+      
+      console.log("datafir",data);
+      
+      const createFieldMutation = `
         mutation CreateModelField($input: ModelFieldInput!) {
             createModelField(input: $input) {
               id
             }
           }
-        `
-        data.model = currentModel
-        const createFieldVariables = {input:data}
-        await createRecord({mutation:createFieldMutation,variables:createFieldVariables})
-        console.log("🚀 ~ constonSubmit:SubmitHandler<any>=async ~ createFieldVariables:", createFieldVariables)
-        window.location.reload()
-        
+        `;
+      data.model = currentModel;
+      data.name=currentModelName
+      
+      const createFieldVariables = { input: data };
+      await createRecord({
+        mutation: createFieldMutation,
+        variables: createFieldVariables,
+      });
+      console.log(
+        "🚀 ~ constonSubmit:SubmitHandler<any>=async ~ createFieldVariables:",
+        createFieldVariables
+      );
+      window.location.reload();
     }
-    if(apiName=="editField"){
-      data.id = fieldSlug?.data.id 
-      data.model = currentModel
+    if (apiName == "editField") {
+      data.id = fieldSlug?.data.id;
+      data.model = currentModel;
       const updatefieldMutation = `mutation UpdateModelField($input: updateModelFieldInput!) {
         updateModelField(input: $input) {
           id
         }
-      }`
+      }`;
       const propertiesToRemove = ["Action", "data", "option"];
 
       const filteredData = Object.fromEntries(
-        Object.entries(data).filter(([key]) => !propertiesToRemove.includes(key))
-        
+        Object.entries(data).filter(
+          ([key]) => !propertiesToRemove.includes(key)
+        )
       );
-      console.log("🚀 ~ constonSubmit:SubmitHandler<any>=async ~ filteredData:", filteredData)
+      console.log(
+        "🚀 ~ constonSubmit:SubmitHandler<any>=async ~ filteredData:",
+        filteredData
+      );
 
-      const updateFieldVariables = {input:filteredData}
-
-      console.log("🚀 ~ constonSubmit:SubmitHandler<any>=async ~ updateFieldVariables:", updateFieldVariables)
-      await updateRecord({mutation:updatefieldMutation,variables:updateFieldVariables})
-      window.location.reload()
-
+      const updateFieldVariables = { input: filteredData };
+      
+      console.log(
+        "🚀 ~ constonSubmit:SubmitHandler<any>=async ~ updateFieldVariables:",
+        updateFieldVariables
+      );
+      await updateRecord({
+        mutation: updatefieldMutation,
+        variables: updateFieldVariables,
+      });
+      if(data.managed){
+        alert("field edited successfully")
+        window.location.reload();
+      }
+      else{
+        alert("cannot modify")
+      }
+     
+    }
+    if (apiName == "editModel") {
+      data.id = currentModel
+      const updateModelQuery = `mutation UpdateModel($input: updateModelInput!) {
+                                  updateModel(input: $input) {
+                                    id
+                                  }
+                                }`;
+      const updateModelVariable = {input:data}
+    
+      await updateRecord({
+        mutation: updateModelQuery,
+        variables: updateModelVariable,
+      });
+      window.location.reload();
       
 
-      // Create a new object without the specified properties
       
     }
   };
@@ -206,7 +254,6 @@ export function DynamicForm({
     ];
 
     switch (field) {
-      
       case "label":
         return (
           <>
@@ -228,8 +275,7 @@ export function DynamicForm({
           </>
         );
 
-        
-        case "fieldName":
+      case "fieldName":
         return (
           <>
             {startCase(field)}
