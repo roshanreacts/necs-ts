@@ -8,6 +8,7 @@ import Modal from '../Modal/Modal';
 import Button from '../Button/Button';
 import { useRouter } from 'next/navigation';
 import { deleteRecord, listModel } from '@/app/actions';
+import { css } from '@emotion/css';
 
 // interface TableColumnProps {
 //   headerName: String,
@@ -26,9 +27,13 @@ type TableType = {
 }
 
 export default function TableComponent({ selectSlugOption, tableData, modelOptions, modelname, currentModelName, type }: TableType) {
-  // console.log("🚀 ~ TableComponent ~ modelname:", modelname)
-  console.log("🚀 ~ TableComponent ~ modelOptions:", modelOptions)
-  console.log("🚀 ~ TableComponent ~ tableData:", tableData)
+ 
+  const buttonAlign = css`
+  display: flex;
+  justify-content: end;
+  gap: 10px;
+  `
+
 
   const [rowData, setRowData] = useState([]);
   const [selectedRowData, setSelectedRowData] = useState(null);
@@ -147,10 +152,6 @@ export default function TableComponent({ selectSlugOption, tableData, modelOptio
           field: 'Managed',
           width: "auto",
           // checkboxSelection: true,
-        },
-        {
-          field: 'Name',
-          width: "auto"
         },
         {
           field: "Type",
@@ -326,6 +327,11 @@ export default function TableComponent({ selectSlugOption, tableData, modelOptio
 
   }
 
+  const createNewModelOption =()=>{
+    console.log("yashu");
+    
+  }
+
   const editModel = async () => {
 
     const modelQuery = `
@@ -369,7 +375,7 @@ export default function TableComponent({ selectSlugOption, tableData, modelOptio
 
     await deleteRecord({ mutation: deleteModelQuery, variables: deleteModelVariable })
     alert("model deleted successfully")
-    window.location.reload()
+    router.back()
   }
 
 
@@ -386,16 +392,19 @@ export default function TableComponent({ selectSlugOption, tableData, modelOptio
           </div>
           :
           type === "MODEL_OPTIONS" ?
-            <div>
-
-            </div>
+            <>
+                <div className={buttonAlign}>
+                <button onClick={createNewModelOption} >create model option</button>
+                
+              </div>
+            </>
             :
             <>
-              <div>
+              <div className={buttonAlign}>
                 <button onClick={editModel} >edit model</button>
                 <button onClick={deleteModel} >Delete model</button>
+                <button onClick={addnewField} >add new field</button>
               </div>
-              <button onClick={addnewField} >add new field</button>
             </>
         }
         <AgGridReact

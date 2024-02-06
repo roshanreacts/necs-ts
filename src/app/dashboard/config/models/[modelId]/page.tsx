@@ -1,6 +1,7 @@
 "use client"
 import { listFields } from "@/app/actions";
 import TableComponent from "@/components/Table/TableComponent";
+import { css } from "@emotion/css";
 import { HttpResponse, http } from "msw"
 import { useParams } from "next/navigation"
 import { useEffect, useState } from "react";
@@ -13,6 +14,8 @@ export default function Model() {
 
     const { modelId } = useParams();
 
+
+   
     useEffect(() => {
         handlemodel();
     }, [])
@@ -71,7 +74,7 @@ export default function Model() {
                 <h3 style={{ margin: "auto", marginTop: "60px", marginBottom: "20px" }}>Model Fields</h3>
                 <div
                     className="Table__data"
-                    style={{ width: "100%", height: "50vh", marginLeft: "35px" }}
+                    style={{ width: "-webkit-fill-available", height: "50vh", marginLeft: "35px" }}
                 >
                     {/* {sendData  &&( */}
                     <TableComponent
@@ -79,6 +82,7 @@ export default function Model() {
                         tableData={modelFields}
                         modelOptions={''}
                         modelname={modelId}
+                        
                     />
                     {/* )} */}
                 </div>
@@ -88,7 +92,7 @@ export default function Model() {
 
                 <div
                     className="Table__data"
-                    style={{ width: "100%", height: "50vh", marginLeft: "35px", zIndex: '-1' }}
+                    style={{ width: "-webkit-fill-available", height: "50vh", marginLeft: "35px", zIndex: '-1' }}
                 >
                     <TableComponent
                         selectSlugOption={{}}

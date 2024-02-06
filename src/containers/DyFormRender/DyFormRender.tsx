@@ -1,5 +1,5 @@
 "use client";
-import { createRecord, updateRecord } from "@/app/actions";
+import { createRecord, listModel, updateRecord } from "@/app/actions";
 import Modal from "@/components/Modal/Modal";
 import { css } from "@emotion/css";
 import { startCase } from "lodash";
@@ -127,6 +127,24 @@ export function DynamicForm({
     console.log(`Form ${fieldSlug}, data:`, data);
     console.log("currentModel", currentModel);
 
+
+
+    const getModelNameQuery = `query Docs($where: whereModelInput) {
+      listModels(where: $where) {
+        docs {
+          name
+          id
+        }
+      }
+    }`
+    const getModelNameVar = {where:{id:{is:currentModel}}}
+
+    const modelNamedata = await listModel(getModelNameQuery,getModelNameVar)
+    console.log("🚀 ~ constonSubmit:SubmitHandler<any>= ~ modelNamedata:", modelNamedata)
+    
+    const modelName = modelNamedata.data?modelNamedata.data.listModels.docs[0].name:""
+    console.log("🚀 ~ constonSubmit:SubmitHandler<any>= ~ modelName:", modelName)
+
     if (apiName == "newModel") {
       const createModelQuery = `mutation CreateModel($input: ModelInput!) {
             createModel(input: $input) {
@@ -146,7 +164,8 @@ export function DynamicForm({
     if (apiName == "newField") {
       console.log("nfld",currentModelName);
       
-      console.log("datafir",data);
+      
+    
       
       const createFieldMutation = `
         mutation CreateModelField($input: ModelFieldInput!) {
@@ -156,7 +175,7 @@ export function DynamicForm({
           }
         `;
       data.model = currentModel;
-      data.name=currentModelName
+      data.name=modelName
       
       const createFieldVariables = { input: data };
       await createRecord({
@@ -171,7 +190,6 @@ export function DynamicForm({
     }
     if (apiName == "editField") {
       data.id = fieldSlug?.data.id;
-      data.model = currentModel;
       const updatefieldMutation = `mutation UpdateModelField($input: updateModelFieldInput!) {
         updateModelField(input: $input) {
           id
