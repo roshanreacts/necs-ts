@@ -9,7 +9,6 @@ export interface SearchableSelectProps {
 
 const SearchableSelect: React.FC<SearchableSelectProps> = ({ options, onChange }) => {
   const handleChange = (selectedOption: any) => {
-    console.log("🚀 ~ file: SearchableSelect.tsx:12 ~ handleChange ~ selectedOption:", selectedOption)
     
     if (onChange) {
       onChange(selectedOption);

@@ -58,19 +58,35 @@ export default function TableComponent({ selectSlugOption, tableData, modelOptio
     <button onClick={() => handleModalOptionEdit(data)}>Edit</button>
   )
 
-  const handleModalOptionEdit = ({ rowData }: any) => {
-    setSelectedRowData(rowData);
-    // setApiName("editField")
-    // setIsModalOpen(true);
+  const handleModalOptionEdit = ({ data }: any) => {
+
+    const propertiesToRemove = ["name"];
+if(!data.managed){
+  const filteredData = Object.fromEntries(
+    Object.entries(data).filter(([key]) => !propertiesToRemove.includes(key))
+  );
+  setSelectedRowData(filteredData);
+  setApiName("editModelOption")
+  setIsModalOpen(true);
+}
+else{
+  alert("cannot modify the field")
+}
+    // Create a new object without the specified properties
+   
   }
   const handleEdit = (rowData) => {
     // You can access the complete row data here and perform your edit logic
     // rowData.managed=true
     console.log("Edit button clicked. Row data:", rowData);
-
-    setSelectedRowData(rowData);
-    setApiName("editField")
-    setIsModalOpen(true);
+    if(!rowData.data.managed){
+      setSelectedRowData(rowData);
+      setApiName("editField")
+      setIsModalOpen(true);
+    }
+    else{
+      alert("cannot modify the field")
+    }
     // Additional logic for editing the row...
   };
 
@@ -79,29 +95,49 @@ export default function TableComponent({ selectSlugOption, tableData, modelOptio
     <button onClick={() => handleDeleteField(data)}>Delete</button>
   )
 
-  const handleDeleteField = async (rowData) => {
+  const handleDeleteField = async ({data}) => {
 
-    const FieldId = rowData.data.id
-    console.log("🚀 ~ handleDeleteField ~ rowData:", rowData)
+    const FieldId = data.id
     const mutateDeleteQuery = `
     mutation DeleteModelField($deleteModelFieldId: ID!) {
       deleteModelField(id: $deleteModelFieldId)
     }
     `
-
-    const DeleteVariable = { deleteModelFieldId: FieldId }
-    await deleteRecord({ mutation: mutateDeleteQuery, variables: DeleteVariable })
-    if (rowData.managed) {
+    if (!data.managed) {
+      const DeleteVariable = { deleteModelFieldId: FieldId }
+      await deleteRecord({ mutation: mutateDeleteQuery, variables: DeleteVariable })
       alert("field deleted successfully")
       window.location.reload()
     }
     else {
-      alert("cannot modify")
+      alert("cannot modify the field")
     }
 
 
   }
 
+
+  const deleteModelOptionButton = ({ data }) =>
+  (
+    <button onClick={() => handleDeleteModelOption(data)}>Delete</button>
+  )
+
+  const handleDeleteModelOption = async(data)=>{
+    const fieldid = data.data.id
+    const modelOptionQuery = `mutation DeleteModelOption($deleteModelOptionId: ID!) {
+                              deleteModelOption(id: $deleteModelOptionId)
+                            }`
+    const modelOptionVariable = {deleteModelOptionId:fieldid}
+    if(!data.data.managed){
+      await deleteRecord({ mutation: modelOptionQuery, variables: modelOptionVariable })
+      alert("field deleted successfully")
+      window.location.reload()
+    }
+    else{
+      alert("cannot delete the field")
+    }
+    
+  }
   const IsEditableColumns = () => {
     const isEditableColumns = true
     return (
@@ -157,20 +193,27 @@ export default function TableComponent({ selectSlugOption, tableData, modelOptio
           field: "Type",
           width: "auto"
         },
-        {
-          field: "Value",
-          width: "auto"
-        },
+        
         {
           field: 'Action',
           width: "auto",
           cellRenderer: ModelOptionsEditAction,
+        },
+        {
+          field: 'Delete',
+          width: "auto",
+          cellRenderer:  deleteModelOptionButton,
         },
       ]
       :
       [
         {
           field: 'fieldName',
+          width: "auto",
+          // checkboxSelection: true,
+        },
+        {
+          field: 'Managed',
           width: "auto",
           // checkboxSelection: true,
         },
@@ -200,7 +243,6 @@ export default function TableComponent({ selectSlugOption, tableData, modelOptio
     if (type === "MODEL_LIST") {
       newColumnDefs = Object.keys(tableData).map((fieldName: string) => {
         const field = tableData[fieldName];
-        console.log("🚀 ~ constnewColumnDefs:any=Object.keys ~ field: m", field)
 
         return {
           id: field,
@@ -226,19 +268,18 @@ export default function TableComponent({ selectSlugOption, tableData, modelOptio
     } else if (type === "MODEL_OPTIONS") {
       newColumnDefs = Object.keys(tableData).map((fieldName: string) => {
         const field = tableData[fieldName];
-        console.log("🚀 ~ constnewColumnDefs:any=Object.keys ~ field options:", field)
 
         return {
           id: field?.data?.id,
-          Name: field?.name,
+          // Name: field?.name,
           KeyName: field?.keyName,
-          fieldName: field?.fieldName,
+          // fieldName: field?.fieldName,
           Type: field?.type,
           Value: field?.value,
           Managed: field?.managed ? "✔" : "X",
-          unique: field?.unique,
-          required: field?.required,
-          default: field?.default,
+          // unique: field?.unique,
+          // required: field?.required,
+          // default: field?.default,
           option: "otopn",
           Action: true,
           data: field
@@ -249,7 +290,6 @@ export default function TableComponent({ selectSlugOption, tableData, modelOptio
     else {
       newColumnDefs = Object.keys(tableData).map((fieldName: string) => {
         const field = tableData[fieldName];
-        console.log("🚀 ~ constnewColumnDefs:any=Object.keys ~ field:", field)
 
         return {
           id: field?.data?.id,
@@ -257,7 +297,7 @@ export default function TableComponent({ selectSlugOption, tableData, modelOptio
           fieldName: field?.fieldName,
           // Type: field?.type,
           type: field?.type,
-          managed: field?.managed,
+          Managed: field?.managed ? "✔" : "X",
           unique: field?.unique,
           required: field?.required,
           default: field?.default,
@@ -328,9 +368,19 @@ export default function TableComponent({ selectSlugOption, tableData, modelOptio
   }
 
   const createNewModelOption =()=>{
-    console.log("yashu");
+    const newModelOptions = {
+      keyName: "",
+      managed: true,
+      type: "boolean",
+      value: ""
+    }
+    setSelectedRowData(newModelOptions)
+    setApiName("newModelOption")
+    setIsModalOpen(true);
     
   }
+
+  
 
   const editModel = async () => {
 
@@ -350,7 +400,6 @@ export default function TableComponent({ selectSlugOption, tableData, modelOptio
     const modelVariables = { where: { id: { is: modelname } } }
     const modelDetails = await listModel(modelQuery, modelVariables)
     const modelData = modelDetails.data.listModels.docs[0]
-    console.log("🚀 ~ editHistory ~ modelData:", modelData)
 
 
     const editModelData = {
@@ -364,14 +413,12 @@ export default function TableComponent({ selectSlugOption, tableData, modelOptio
     setIsModalOpen(true);
   }
   const deleteModel = async () => {
-    console.log("🚀 ~ deleteModel ~ modelname:", modelname)
 
     const deleteModelQuery = `mutation DeleteModel($deleteModelId: ID!) {
                                 deleteModel(id: $deleteModelId)
                               }`
     const deleteModelVariable = { deleteModelId: modelname }
 
-    console.log("🚀 ~ deleteModel ~ deleteModelVariable:", deleteModelVariable)
 
     await deleteRecord({ mutation: deleteModelQuery, variables: deleteModelVariable })
     alert("model deleted successfully")
@@ -384,6 +431,8 @@ export default function TableComponent({ selectSlugOption, tableData, modelOptio
     <>
 
       <div className="ag-theme-quartz-light" style={{ width: '100%', height: '100%', padding: "0px" }}>
+
+        <>
         {type === "MODEL_LIST" ?
 
 
@@ -406,7 +455,9 @@ export default function TableComponent({ selectSlugOption, tableData, modelOptio
                 <button onClick={addnewField} >add new field</button>
               </div>
             </>
+      
         }
+        </>
         <AgGridReact
           rowData={rowData}
           rowStyle={{}}

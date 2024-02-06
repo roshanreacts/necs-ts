@@ -5,7 +5,6 @@ export default function MultiSelectDropDown({ options }: { options: { label: str
   const [selected, setSelected] = useState([]);
   const handleChange=(selected:any) =>{
     setSelected(selected)
-    console.log("🚀 ~ file: MultiSelectDropDown.tsx:10 ~ handleChange ~ selected:", selected)
   } 
 
   return (

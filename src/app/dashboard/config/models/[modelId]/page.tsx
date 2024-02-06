@@ -37,7 +37,6 @@ export default function Model() {
 
         const fieldvariables = { where: { model: { is: modelId } } }
         const modelFields = await listFields({ query: fieldsQuery, variables: fieldvariables })
-        console.log("🚀 ~ fetchData ~ modelFields:", modelFields.data.listModelFields?.docs)
         setModelFields(modelFields.data.listModelFields.docs)
 
         // console.log("🚀 ~ handlemodel ~ selectedModelName:", selectedModelName)
@@ -45,6 +44,7 @@ export default function Model() {
         const modelOptionsQuery = `query Docs($where: whereModelOptionInput) {
             listModelOptions(where: $where) {
               docs {
+                id
                 keyName
                 managed
                 name
@@ -56,7 +56,6 @@ export default function Model() {
         const modelOptionsVariable = { where: { model: { is: modelId } } }
 
         const modelOptionsData = await listFields({ query: modelOptionsQuery, variables: modelOptionsVariable })
-        console.log("🚀 ~ handlemodel ~ modelOptions:", modelOptionsData.data?.listModelOptions?.docs)
         setModelOptions(modelOptionsData.data?.listModelOptions?.docs)
 
         setLoading(false)
@@ -92,7 +91,7 @@ export default function Model() {
 
                 <div
                     className="Table__data"
-                    style={{ width: "-webkit-fill-available", height: "50vh", marginLeft: "35px", zIndex: '-1' }}
+                    style={{ width: "-webkit-fill-available", height: "50vh", marginLeft: "35px" }}
                 >
                     <TableComponent
                         selectSlugOption={{}}

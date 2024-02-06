@@ -121,12 +121,7 @@ export function DynamicForm({
   };
 
   const onSubmit: SubmitHandler<any> = async (data) => {
-    console.log("fslug", fieldSlug);
-
-    console.log("apiname", apiName);
-    console.log(`Form ${fieldSlug}, data:`, data);
-    console.log("currentModel", currentModel);
-
+    
 
 
     const getModelNameQuery = `query Docs($where: whereModelInput) {
@@ -140,10 +135,8 @@ export function DynamicForm({
     const getModelNameVar = {where:{id:{is:currentModel}}}
 
     const modelNamedata = await listModel(getModelNameQuery,getModelNameVar)
-    console.log("🚀 ~ constonSubmit:SubmitHandler<any>= ~ modelNamedata:", modelNamedata)
     
     const modelName = modelNamedata.data?modelNamedata.data.listModels.docs[0].name:""
-    console.log("🚀 ~ constonSubmit:SubmitHandler<any>= ~ modelName:", modelName)
 
     if (apiName == "newModel") {
       const createModelQuery = `mutation CreateModel($input: ModelInput!) {
@@ -162,11 +155,6 @@ export function DynamicForm({
       window.location.reload();
     }
     if (apiName == "newField") {
-      console.log("nfld",currentModelName);
-      
-      
-    
-      
       const createFieldMutation = `
         mutation CreateModelField($input: ModelFieldInput!) {
             createModelField(input: $input) {
@@ -182,10 +170,7 @@ export function DynamicForm({
         mutation: createFieldMutation,
         variables: createFieldVariables,
       });
-      console.log(
-        "🚀 ~ constonSubmit:SubmitHandler<any>=async ~ createFieldVariables:",
-        createFieldVariables
-      );
+      
       window.location.reload();
     }
     if (apiName == "editField") {
@@ -202,22 +187,16 @@ export function DynamicForm({
           ([key]) => !propertiesToRemove.includes(key)
         )
       );
-      console.log(
-        "🚀 ~ constonSubmit:SubmitHandler<any>=async ~ filteredData:",
-        filteredData
-      );
+      
 
       const updateFieldVariables = { input: filteredData };
       
-      console.log(
-        "🚀 ~ constonSubmit:SubmitHandler<any>=async ~ updateFieldVariables:",
-        updateFieldVariables
-      );
+    
       await updateRecord({
         mutation: updatefieldMutation,
         variables: updateFieldVariables,
       });
-      if(data.managed){
+      if(!data.managed){
         alert("field edited successfully")
         window.location.reload();
       }
@@ -242,6 +221,43 @@ export function DynamicForm({
       window.location.reload();
       
 
+      
+    }
+    if(apiName=="newModelOption"){
+      data.model = currentModel;
+      data.name=modelName
+      const modelOptionQuery = `mutation CreateModelOption($input: ModelOptionInput!) {
+                                  createModelOption(input: $input) {
+                                    id
+                                  }
+                                }`
+      const modelOptionVariable = {input:data}
+
+      await createRecord({
+        mutation: modelOptionQuery,
+        variables: modelOptionVariable,
+      });
+      window.location.reload()
+    }
+    if(apiName=="editModelOption"){
+      data.id = fieldSlug?.id;
+      if(!data.managed){
+        const editModelOptionQuery = `mutation UpdateModelOption($input: updateModelOptionInput!) {
+                                        updateModelOption(input: $input) {
+                                          id
+                                        }
+                                      }`
+        const editModelOptionVariable={input:data}
+        await updateRecord({
+          mutation: editModelOptionQuery,
+          variables: editModelOptionVariable,
+        });
+        alert("field edited successfully")
+        window.location.reload();
+      }
+      else{
+        alert("cannot modify")
+      }
       
     }
   };
@@ -272,6 +288,7 @@ export function DynamicForm({
     ];
 
     switch (field) {
+      
       case "label":
         return (
           <>
@@ -292,7 +309,25 @@ export function DynamicForm({
             />
           </>
         );
-
+        case "keyName":
+          return (
+            <>
+              {startCase(field)}
+              <input
+                {...props}
+                onChange={(e) => setFieldValue(field, e.target.value)}
+              />
+            </>
+          ); case "value":
+          return (
+            <>
+              {startCase(field)}
+              <input
+                {...props}
+                onChange={(e) => setFieldValue(field, e.target.value)}
+              />
+            </>
+          );
       case "fieldName":
         return (
           <>
