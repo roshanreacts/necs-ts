@@ -110,7 +110,7 @@ else{
       window.location.reload()
     }
     else {
-      alert("cannot modify the field")
+      alert("cannot delete the field")
     }
 
 
@@ -121,9 +121,12 @@ else{
   (
     <button onClick={() => handleDeleteModelOption(data)}>Delete</button>
   )
+  
 
   const handleDeleteModelOption = async(data)=>{
+    
     const fieldid = data.data.id
+    console.log("🚀 ~ handleDeleteModelOption ~ data:", data)
     const modelOptionQuery = `mutation DeleteModelOption($deleteModelOptionId: ID!) {
                               deleteModelOption(id: $deleteModelOptionId)
                             }`
