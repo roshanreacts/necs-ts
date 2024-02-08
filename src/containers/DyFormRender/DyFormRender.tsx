@@ -77,8 +77,7 @@ interface DynamicFormProps {
   fieldValue: any;
   apiName?: string;
   currentModel?: string;
-  currentModelName?:string
-
+  currentModelName?: string;
 }
 
 export function DynamicForm({
@@ -86,8 +85,7 @@ export function DynamicForm({
   fieldValue,
   apiName,
   currentModel,
-  currentModelName
-
+  currentModelName,
 }: DynamicFormProps) {
   const {
     register,
@@ -106,7 +104,7 @@ export function DynamicForm({
   const [dynamicFieldOptions, setDynamicFieldOptions] = React.useState<any[]>(
     []
   );
-
+  const [allmodels, setAllModels] = React.useState<any[]>([]);
   const selectedType = watch("type") || fieldValue.type;
 
   const setFieldValue = (field: string, value: any) => {
@@ -120,9 +118,30 @@ export function DynamicForm({
     setValue(field, value);
   };
 
-  const onSubmit: SubmitHandler<any> = async (data) => {
-    
+  React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const query = `query ListModels {
+                listModels {
+                  docs {
+                    name
+                    id
+                  }
+                }
+              }`;
+        const variables = {};
+        const models = await listModel(query, variables);
+        console.log("🚀 ~ fetchData ~ models:", models);
+        setAllModels(models.data.listModels.docs);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchData();
+  }, []);
 
+  const onSubmit: SubmitHandler<any> = async (data) => {
+    console.log("🚀 ~ constonSubmit:SubmitHandler<any>= ~ data:", data);
 
     const getModelNameQuery = `query Docs($where: whereModelInput) {
       listModels(where: $where) {
@@ -131,13 +150,17 @@ export function DynamicForm({
           id
         }
       }
-    }`
-    const getModelNameVar = {where:{id:{is:currentModel}}}
+    }`;
+    const getModelNameVar = { where: { id: { is: currentModel } } };
 
-    const modelNamedata = await listModel(getModelNameQuery,getModelNameVar)
+    const modelNamedata = await listModel(getModelNameQuery, getModelNameVar);
     
-    const modelName = modelNamedata.data?modelNamedata.data.listModels.docs[0].name:""
+    const modelName = modelNamedata.data
+      ? modelNamedata?.data?.listModels?.docs[0]?.name
+      : "";
 
+      console.log("apiname",apiName);
+      
     if (apiName == "newModel") {
       const createModelQuery = `mutation CreateModel($input: ModelInput!) {
             createModel(input: $input) {
@@ -146,7 +169,7 @@ export function DynamicForm({
           }`;
 
       const createModelVariables = {
-        input: data
+        input: data,
       };
       await createRecord({
         mutation: createModelQuery,
@@ -163,14 +186,14 @@ export function DynamicForm({
           }
         `;
       data.model = currentModel;
-      data.name=modelName
-      
+      data.name = modelName;
+
       const createFieldVariables = { input: data };
       await createRecord({
         mutation: createFieldMutation,
         variables: createFieldVariables,
       });
-      
+
       window.location.reload();
     }
     if (apiName == "editField") {
@@ -187,78 +210,87 @@ export function DynamicForm({
           ([key]) => !propertiesToRemove.includes(key)
         )
       );
-      
 
       const updateFieldVariables = { input: filteredData };
-      
-    
+
       await updateRecord({
         mutation: updatefieldMutation,
         variables: updateFieldVariables,
       });
-      if(!data.managed){
-        alert("field edited successfully")
+      if (!data.managed) {
+        alert("field edited successfully");
         window.location.reload();
+      } else {
+        alert("cannot modify");
       }
-      else{
-        alert("cannot modify")
-      }
-     
     }
     if (apiName == "editModel") {
-      data.id = currentModel
+      data.id = currentModel;
       const updateModelQuery = `mutation UpdateModel($input: updateModelInput!) {
                                   updateModel(input: $input) {
                                     id
                                   }
                                 }`;
-      const updateModelVariable = {input:data}
-    
+      const updateModelVariable = { input: data };
+
       await updateRecord({
         mutation: updateModelQuery,
         variables: updateModelVariable,
       });
       window.location.reload();
-      
-
-      
     }
-    if(apiName=="newModelOption"){
+    if (apiName == "newModelOption") {
       data.model = currentModel;
-      data.name=modelName
+      data.name = modelName;
       const modelOptionQuery = `mutation CreateModelOption($input: ModelOptionInput!) {
                                   createModelOption(input: $input) {
                                     id
                                   }
-                                }`
-      const modelOptionVariable = {input:data}
+                                }`;
+      const modelOptionVariable = { input: data };
 
       await createRecord({
         mutation: modelOptionQuery,
         variables: modelOptionVariable,
       });
-      window.location.reload()
+      window.location.reload();
     }
-    if(apiName=="editModelOption"){
+    if (apiName == "editModelOption") {
       data.id = fieldSlug?.id;
-      if(!data.managed){
+      if (!data.managed) {
         const editModelOptionQuery = `mutation UpdateModelOption($input: updateModelOptionInput!) {
                                         updateModelOption(input: $input) {
                                           id
                                         }
-                                      }`
-        const editModelOptionVariable={input:data}
+                                      }`;
+        const editModelOptionVariable = { input: data };
         await updateRecord({
           mutation: editModelOptionQuery,
           variables: editModelOptionVariable,
         });
-        alert("field edited successfully")
+        alert("field edited successfully");
         window.location.reload();
+      } else {
+        alert("cannot modify");
       }
-      else{
-        alert("cannot modify")
-      }
-      
+    }
+    if(apiName == "newTab"){
+      console.log("data",data);
+        const createTabMutation = `mutation CreateTab($input: TabInput!) {
+          createTab(input: $input) {
+            id
+          }
+        }
+        `
+        data.order = Number(data.order)
+        console.log("after convert",data);
+      const createTabVariables = { input: data };
+      await createRecord({
+        mutation: createTabMutation,
+        variables: createTabVariables,
+      });
+      window.location.reload()
+
     }
   };
 
@@ -288,7 +320,6 @@ export function DynamicForm({
     ];
 
     switch (field) {
-      
       case "label":
         return (
           <>
@@ -309,25 +340,26 @@ export function DynamicForm({
             />
           </>
         );
-        case "keyName":
-          return (
-            <>
-              {startCase(field)}
-              <input
-                {...props}
-                onChange={(e) => setFieldValue(field, e.target.value)}
-              />
-            </>
-          ); case "value":
-          return (
-            <>
-              {startCase(field)}
-              <input
-                {...props}
-                onChange={(e) => setFieldValue(field, e.target.value)}
-              />
-            </>
-          );
+      case "keyName":
+        return (
+          <>
+            {startCase(field)}
+            <input
+              {...props}
+              onChange={(e) => setFieldValue(field, e.target.value)}
+            />
+          </>
+        );
+      case "value":
+        return (
+          <>
+            {startCase(field)}
+            <input
+              {...props}
+              onChange={(e) => setFieldValue(field, e.target.value)}
+            />
+          </>
+        );
       case "fieldName":
         return (
           <>
@@ -437,6 +469,53 @@ export function DynamicForm({
             )}
           </>
         );
+
+      case "order":
+        return (
+          <>
+            {startCase(field)}
+            <input
+            type="number"
+              {...props}
+              onChange={(e) => setFieldValue(field, e.target.value)}
+            />
+          </>
+        );
+
+      case "model":
+        return (
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            {startCase(field)} {/* Using startCase to format the field name */}
+            {fieldSlug[field]}
+            <select
+              {...props}
+              multiple={false}
+              onChange={(e) => setFieldValue(field, e.target.value)}
+            //  defaultValue={allmodels?allmodels[0].id:""}
+            >
+              {allmodels &&
+                allmodels.map((item) => (
+                  <option key={item.id} value={item.id}>
+                    {item.name}
+                  </option>
+                ))}
+            </select>
+          </div>
+        );
+        case "icon":
+          return (
+            <>
+              {startCase(field)}
+              <div style={{display:"flex",flexDirection:"column"}}>
+              <input
+                {...props}
+                onChange={(e) => setFieldValue(field, e.target.value)}
+              />
+              <span>please enter a string from reacticonsAi</span>
+              </div>
+            </>
+          ); 
+
       case "type":
         return (
           <div style={{ display: "flex", flexDirection: "column" }}>

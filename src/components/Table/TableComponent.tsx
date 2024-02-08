@@ -17,7 +17,7 @@ import { css } from '@emotion/css';
 // }
 
 type TableType = {
-  selectSlugOption: any;
+  selectSlugOption?: any;
   tableData: any;
   modelOptions?: any;
   modelname?: any
@@ -141,6 +141,25 @@ else{
     }
     
   }
+
+  const handleEditTab = ({ data }) =>
+  (
+    <button onClick={() => handleTabEdit(data)}>Edit</button>
+  )
+  const handleTabEdit = (data:any)=>{
+    console.log(data);
+    
+  }
+
+  const handleDeleteTab = ({ data }) =>
+  (
+    <button onClick={() => handleTabDelete(data)}>Delete</button>
+  )
+  const handleTabDelete = (data:any)=>{
+    console.log(data);
+    
+  }
+
   const IsEditableColumns = () => {
     const isEditableColumns = true
     return (
@@ -206,6 +225,37 @@ else{
           field: 'Delete',
           width: "auto",
           cellRenderer:  deleteModelOptionButton,
+        },
+      ]:type=="Tab_LIST"?
+      [
+        
+        {
+          field: 'label',
+          width: "auto",
+          // checkboxSelection: true,
+        },
+        {
+          field: 'order',
+          width: "auto",
+        },
+        
+        {
+          field: 'model',
+          width: "auto",
+        },
+        {
+          field: 'icon',
+          width: "auto",
+        },
+        {
+          field: 'Edit',
+          width: "auto",
+          cellRenderer: handleEditTab,
+        },
+        {
+          field: 'Delete',
+          width: "auto",
+          cellRenderer: handleDeleteTab,
         },
       ]
       :
@@ -283,6 +333,23 @@ else{
           // unique: field?.unique,
           // required: field?.required,
           // default: field?.default,
+          option: "otopn",
+          Action: true,
+          data: field
+        };
+
+      });
+    }
+    else if (type==="Tab_LIST"){
+      newColumnDefs = Object.keys(tableData).map((fieldName: string) => {
+        const field = tableData[fieldName];
+        console.log("🚀 ~ newColumnDefs=Object.keys ~ field:", field)
+
+        return {
+          order:field.order,
+         label:field.label,
+         icon:field.icon,
+         model:field.model.name,
           option: "otopn",
           Action: true,
           data: field
@@ -428,6 +495,19 @@ else{
     router.back()
   }
 
+  const createNewTab =()=>{
+    const newTabOptions = {
+        model: "",
+        order: 1,
+        label: "",
+        icon: "",
+    }
+    setSelectedRowData(newTabOptions)
+    setApiName("newTab")
+    setIsModalOpen(true);
+    
+  }
+
 
 
   return (
@@ -449,7 +529,11 @@ else{
                 <button onClick={createNewModelOption} >create model option</button>
                 
               </div>
-            </>
+            </>:
+            type === "Tab_LIST"?
+            <div className={buttonAlign}>
+            <button onClick={createNewTab}>create Tab</button>
+            </div>
             :
             <>
               <div className={buttonAlign}>
