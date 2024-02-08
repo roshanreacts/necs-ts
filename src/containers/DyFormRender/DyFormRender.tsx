@@ -154,13 +154,13 @@ export function DynamicForm({
     const getModelNameVar = { where: { id: { is: currentModel } } };
 
     const modelNamedata = await listModel(getModelNameQuery, getModelNameVar);
-    
+
     const modelName = modelNamedata.data
       ? modelNamedata?.data?.listModels?.docs[0]?.name
       : "";
 
-      console.log("apiname",apiName);
-      
+    console.log("apiname", apiName);
+
     if (apiName == "newModel") {
       const createModelQuery = `mutation CreateModel($input: ModelInput!) {
             createModel(input: $input) {
@@ -274,23 +274,38 @@ export function DynamicForm({
         alert("cannot modify");
       }
     }
-    if(apiName == "newTab"){
-      console.log("data",data);
-        const createTabMutation = `mutation CreateTab($input: TabInput!) {
+    if (apiName == "newTab") {
+      console.log("data", data);
+      const createTabMutation = `mutation CreateTab($input: TabInput!) {
           createTab(input: $input) {
             id
           }
         }
-        `
-        data.order = Number(data.order)
-        console.log("after convert",data);
+        `;
+      data.order = Number(data.order);
+      console.log("after convert", data);
       const createTabVariables = { input: data };
       await createRecord({
         mutation: createTabMutation,
         variables: createTabVariables,
       });
-      window.location.reload()
+      window.location.reload();
+    }
+    if (apiName === "editTab") {
+      data.id = fieldSlug.id;
+      data.order = Number(data.order);
+      const updateTabQuery = `mutation UpdateTab($input: updateTabInput!) {
+        updateTab(input: $input) {
+          id
+        }
+      }`;
 
+      const updateTabVariable = { input: data };
+      await updateRecord({
+        mutation: updateTabQuery,
+        variables: updateTabVariable,
+      });
+      window.location.reload();
     }
   };
 
@@ -475,7 +490,7 @@ export function DynamicForm({
           <>
             {startCase(field)}
             <input
-            type="number"
+              type="number"
               {...props}
               onChange={(e) => setFieldValue(field, e.target.value)}
             />
@@ -491,7 +506,7 @@ export function DynamicForm({
               {...props}
               multiple={false}
               onChange={(e) => setFieldValue(field, e.target.value)}
-            //  defaultValue={allmodels?allmodels[0].id:""}
+              //  defaultValue={allmodels?allmodels[0].id:""}
             >
               {allmodels &&
                 allmodels.map((item) => (
@@ -502,19 +517,19 @@ export function DynamicForm({
             </select>
           </div>
         );
-        case "icon":
-          return (
-            <>
-              {startCase(field)}
-              <div style={{display:"flex",flexDirection:"column"}}>
+      case "icon":
+        return (
+          <>
+            {startCase(field)}
+            <div style={{ display: "flex", flexDirection: "column" }}>
               <input
                 {...props}
                 onChange={(e) => setFieldValue(field, e.target.value)}
               />
               <span>please enter a string from reacticonsAi</span>
-              </div>
-            </>
-          ); 
+            </div>
+          </>
+        );
 
       case "type":
         return (
