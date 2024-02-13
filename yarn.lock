@@ -2130,10 +2130,10 @@
     "@types/mdx" "^2.0.0"
     "@types/react" ">=16"
 
-"@mercury-js/core@2.0.0-beta.11":
-  version "2.0.0-beta.11"
-  resolved "https://registry.npmjs.org/@mercury-js/core/-/core-2.0.0-beta.11.tgz"
-  integrity sha512-E2JHZk8uQgv8UNTkwMWeGCPO0knPCWGqPSp+YiXXyTObldNmP8ZXSIq2Hb+xIMSrwobCn7Gv0/YiEqJD5fUm3w==
+"@mercury-js/core@2.0.0-beta.18":
+  version "2.0.0-beta.18"
+  resolved "https://registry.yarnpkg.com/@mercury-js/core/-/core-2.0.0-beta.18.tgz#5dd274fe6abb57cd1c3d7f2c0af89eec07f4b1c8"
+  integrity sha512-o2qIlIDny4m4Reo6vo42o0mYEzG1k5N//WPu+4p7qlxkCnk/Drg9J892YAhId4XNrUIfqFOP/Ny0YZV4YJnB1g==
   dependencies:
     "@graphql-tools/merge" "^8.3.18"
     bcryptjs "^2.4.3"
