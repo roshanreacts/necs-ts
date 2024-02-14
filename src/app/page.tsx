@@ -4,11 +4,10 @@ import {
   RegisterLink,
   LoginLink,
 } from "@kinde-oss/kinde-auth-nextjs/components";
-import { trpc } from "@/utils/_trpc";
+
 
 export default async function Home() {
-  const users = await trpc.Query.hello.query({ name: "R" });
-  console.log(users);
+  
   return (
     <main className={styles.main}>
       <div className={styles.description}>

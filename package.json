@@ -22,8 +22,6 @@
     "@kinde-oss/kinde-auth-nextjs": "^2.0.13",
     "@mercury-js/core": "2.0.0-beta.19",
     "@tanstack/react-table": "^8.11.3",
-    "@trpc/client": "^10.45.0",
-    "@trpc/server": "^10.45.0",
     "ag-grid-react": "^31.0.2",
     "framer-motion": "^10.16.16",
     "graphql-fields": "^2.0.3",
