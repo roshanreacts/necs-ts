@@ -20,7 +20,7 @@
     "@emotion/styled": "^11.11.0",
     "@graphql-tools/schema": "^10.0.2",
     "@kinde-oss/kinde-auth-nextjs": "^2.0.13",
-    "@mercury-js/core": "2.0.0-beta.19",
+    "@mercury-js/core": "2.0.0-beta.20",
     "@tanstack/react-table": "^8.11.3",
     "ag-grid-react": "^31.0.2",
     "framer-motion": "^10.16.16",
