@@ -5,7 +5,7 @@ import { css } from "@emotion/css";
 import { startCase } from "lodash";
 import React from "react";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
-
+import lz from 'lzutf8';
 export default function DyFormRender({ fields }: { fields: any }) {
   const [dynamicFields, setDynamicFields] = React.useState<any[]>([]);
   const [modalStates, setModalStates] = React.useState({});
@@ -307,6 +307,31 @@ export function DynamicForm({
       });
       window.location.reload();
     }
+    if (apiName === "newComponent") {
+
+      const createComponentMutation = `mutation CreateComponent($input: ComponentInput!) {
+        createComponent(input: $input) {
+          id
+        }
+      }`;
+
+
+      data.code = lz.encodeBase64(lz.compress(data.code))
+      console.log("🚀 ~ constonSubmit:SubmitHandler<any>= ~ data.code:", data.code)
+
+      // const yash = lz.decompress(lz.decodeBase64(data.code));
+      // console.log("🚀 ~ constonSubmit:SubmitHandler<any>= ~ yash:", yash)
+      
+      
+      const createComponentVariables = { input: data };
+      
+      console.log("🚀 ~ constonSubmit:SubmitHandler<any>= ~ createComponentVariables:", createComponentVariables)
+      await createRecord({
+        mutation: createComponentMutation,
+        variables: createComponentVariables,
+      });
+      // window.location.reload();
+    }
   };
 
   React.useEffect(() => {
@@ -484,7 +509,48 @@ export function DynamicForm({
             )}
           </>
         );
-
+        case "description":
+          return (
+            <>
+              {(selectedType == undefined || selectedType === "description") && (
+                <>
+                  <p>{startCase(field)}</p>
+                  <textarea
+                    {...props}
+                    onChange={(e) => setFieldValue(field, e.target.value)}
+                  />
+                </>
+              )}
+            </>
+          );
+          case "code":
+            return (
+              <>
+                {(selectedType == undefined || selectedType === "code") && (
+                  <>
+                    <p>{startCase(field)}</p>
+                    <textarea
+                      {...props}
+                      onChange={(e) => setFieldValue(field, e.target.value)}
+                    />
+                  </>
+                )}
+              </>
+            );
+            case "modules":
+              return (
+                <>
+                  {(selectedType == undefined || selectedType === "modules") && (
+                    <>
+                      <p>{startCase(field)}</p>
+                      <textarea
+                        {...props}
+                        onChange={(e) => setFieldValue(field, e.target.value)}
+                      />
+                    </>
+                  )}
+                </>
+              )
       case "order":
         return (
           <>

@@ -9,6 +9,8 @@ import Button from "../Button/Button";
 import { useRouter } from "next/navigation";
 import { deleteRecord, listModel } from "@/app/actions";
 import { css } from "@emotion/css";
+import lz from 'lzutf8';
+import App from "@/containers/DyCom/DyCom";
 
 // interface TableColumnProps {
 //   headerName: String,
@@ -165,6 +167,21 @@ export default function TableComponent({
     
   };
 
+ const componentView = ({data}:{data:any})=> {
+  console.log("🚀 ~ componentView ~ data:", data)
+  const code = lz.decompress(lz.decodeBase64(data.code));
+  console.log("🚀 ~ componentView ~ code yash:", code)
+  
+  
+
+return(
+  <div>
+    
+  </div>
+)
+ }
+  
+
   const IsEditableColumns = () => {
     const isEditableColumns = true;
     return (
@@ -269,6 +286,39 @@ export default function TableComponent({
             cellRenderer: handleDeleteTab,
           },
         ]
+        : type == "Component_LIST"?[
+          {
+            field: "label",
+            width: "auto",
+            // checkboxSelection: true,
+          },
+          {
+            field: "name",
+            width: "auto",
+            // checkboxSelection: true,
+          },
+          {
+            field: "description",
+            width: "auto",
+            // checkboxSelection: true,
+          },
+          {
+            field: "code",
+            width: "auto",
+            // checkboxSelection: true,
+          },
+          {
+            field: "modules",
+            width: "auto",
+            // checkboxSelection: true,
+            // cellRenderer: (data) => data.data.modules.join(", "),
+          },
+          {
+            field:"component",
+            width:"auto",
+            cellRenderer:componentView
+          }
+        ]
       : [
           {
             field: "fieldName",
@@ -363,7 +413,25 @@ export default function TableComponent({
           data: field,
         };
       });
-    } else {
+    }
+    else if (type === "Component_LIST") {
+      newColumnDefs = Object.keys(tableData).map((fieldName: string) => {
+        const field = tableData[fieldName];
+        console.log("🚀 ~ newColumnDefs=Object.keys ~ field:", field);
+
+        return {
+          label: field.label,
+          name: field.name,
+          description: field.description,
+          code: field.code,
+          modules: field.modules,
+          option: "otopn",
+          Action: true,
+          data: field,
+        };
+      });
+    }
+    else {
       newColumnDefs = Object.keys(tableData).map((fieldName: string) => {
         const field = tableData[fieldName];
 
@@ -492,6 +560,19 @@ export default function TableComponent({
     setApiName("newTab");
     setIsModalOpen(true);
   };
+  const createNewComponent = () => {
+    const newComponentOptions = {
+      name:"",
+      label:"",
+      code:"",
+      description:"",
+      modules:[],
+      
+    };
+    setSelectedRowData(newComponentOptions);
+    setApiName("newComponent");
+    setIsModalOpen(true);
+  };
 
   return (
     <>
@@ -516,7 +597,13 @@ export default function TableComponent({
             <div className={buttonAlign}>
               <button onClick={createNewTab}>create Tab</button>
             </div>
-          ) : (
+          ) :
+          type ==="Component_LIST"?(
+            <div className={buttonAlign}>
+              <button onClick={createNewComponent}>create Tab</button>
+            </div>
+          ):
+          (
             <>
               <div className={buttonAlign}>
                 <button onClick={editModel}>edit model</button>

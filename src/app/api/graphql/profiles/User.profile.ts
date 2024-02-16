@@ -19,6 +19,17 @@ const rules = [
       delete: false,
     },
   },
+  {
+    modelName: "Component",
+    access: {
+      create: false,
+      read: true,
+      update: false,
+      delete: false,
+    },
+  },
+
+  
 ];
 
 export const UserProfile = mercury.access.createProfile("User", rules);
