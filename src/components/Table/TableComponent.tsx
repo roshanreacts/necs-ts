@@ -1,3 +1,4 @@
+"use client";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
 import React, { useEffect, useState } from "react";
@@ -9,8 +10,8 @@ import Button from "../Button/Button";
 import { useRouter } from "next/navigation";
 import { deleteRecord, listModel } from "@/app/actions";
 import { css } from "@emotion/css";
-import lz from 'lzutf8';
-import App from "@/containers/DyCom/DyCom";
+import lz from "lzutf8";
+import { createComponentFromJSX, loadModules } from "@/containers/DyCom/DyCom";
 
 // interface TableColumnProps {
 //   headerName: String,
@@ -164,23 +165,72 @@ export default function TableComponent({
     });
     alert("model deleted successfully");
     window.location.reload();
-    
   };
 
- const componentView = ({data}:{data:any})=> {
-  console.log("🚀 ~ componentView ~ data:", data)
-  const code = lz.decompress(lz.decodeBase64(data.code));
-  console.log("🚀 ~ componentView ~ code yash:", code)
-  
-  
+  const editComponentButton = ({ data }) => (
+    <button onClick={() => handleComponentEdit({ data })}>Edit</button>
+  );
+  const handleComponentEdit = ({ data }: any) => {
+    console.log("datayash123", data);
 
-return(
-  <div>
-    
-  </div>
-)
- }
-  
+    // data.data.model = data.data.model.name;
+    const decode = lz.decompress(lz.decodeBase64(data.data.code));
+    data.data.code = decode;
+    setSelectedRowData(data.data);
+    setApiName("editComponent");
+    setIsModalOpen(true);
+  };
+
+  const handleDeleteComponent = ({ data }) => (
+    <button onClick={() => handleComponentDelete(data)}>Delete</button>
+  );
+  const handleComponentDelete = async (data: any) => {
+    const deleteTabQuery = `mutation DeleteComponent($deleteComponentId: ID!) {
+      deleteComponent(id: $deleteComponentId)
+    }`;
+    await deleteRecord({
+      mutation: deleteTabQuery,
+      variables: { deleteComponentId: data.data.id },
+    });
+    alert("component deleted successfully");
+    window.location.reload();
+  };
+
+  const FrameworkComponent = ({ data }) => {
+    console.log("🚀 ~ FrameworkComponent ~ data:", data);
+    const [dyComponent, setDyComponent] = useState(null);
+
+    // useEffect to handle asynchronous operations
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          // Decompress and decode the code from data
+          const code = lz.decompress(lz.decodeBase64(data.code));
+          console.log("🚀 ~ fetchData ~ code:", code);
+
+          // Load modules asynchronously
+          const compCode = await loadModules(code);
+          console.log("🚀 ~ fetchData ~ compCode: yash", compCode);
+
+          // Create a dynamic component from JSX
+          const DyComponent = createComponentFromJSX(compCode);
+          console.log("🚀 ~ fetchData ~ DyComponent:", DyComponent);
+
+          // Set the dynamic component in state
+          setDyComponent(<DyComponent onClick={() => console.log("hello")} />);
+        } catch (error) {
+          // Handle errors during the asynchronous operation
+          console.error("Error fetching data:", error);
+        }
+      };
+
+      // Trigger fetchData when data.code changes
+      fetchData();
+    }, []); // Dependency array to watch for changes in data.code
+
+    // Render the dynamic component
+    return <div>{dyComponent}</div>;
+  };
 
   const IsEditableColumns = () => {
     const isEditableColumns = true;
@@ -286,7 +336,8 @@ return(
             cellRenderer: handleDeleteTab,
           },
         ]
-        : type == "Component_LIST"?[
+      : type == "Component_LIST"
+      ? [
           {
             field: "label",
             width: "auto",
@@ -314,10 +365,20 @@ return(
             // cellRenderer: (data) => data.data.modules.join(", "),
           },
           {
-            field:"component",
-            width:"auto",
-            cellRenderer:componentView
-          }
+            field: "component",
+            width: "auto",
+            cellRenderer: FrameworkComponent,
+          },
+          {
+            field: "Action",
+            width: "auto",
+            cellRenderer: editComponentButton,
+          },
+          {
+            field: "Delete",
+            width: "auto",
+            cellRenderer: handleDeleteComponent,
+          },
         ]
       : [
           {
@@ -413,8 +474,7 @@ return(
           data: field,
         };
       });
-    }
-    else if (type === "Component_LIST") {
+    } else if (type === "Component_LIST") {
       newColumnDefs = Object.keys(tableData).map((fieldName: string) => {
         const field = tableData[fieldName];
         console.log("🚀 ~ newColumnDefs=Object.keys ~ field:", field);
@@ -430,8 +490,7 @@ return(
           data: field,
         };
       });
-    }
-    else {
+    } else {
       newColumnDefs = Object.keys(tableData).map((fieldName: string) => {
         const field = tableData[fieldName];
 
@@ -562,12 +621,11 @@ return(
   };
   const createNewComponent = () => {
     const newComponentOptions = {
-      name:"",
-      label:"",
-      code:"",
-      description:"",
-      modules:[],
-      
+      name: "",
+      label: "",
+      code: "",
+      description: "",
+      modules: [],
     };
     setSelectedRowData(newComponentOptions);
     setApiName("newComponent");
@@ -597,13 +655,11 @@ return(
             <div className={buttonAlign}>
               <button onClick={createNewTab}>create Tab</button>
             </div>
-          ) :
-          type ==="Component_LIST"?(
+          ) : type === "Component_LIST" ? (
             <div className={buttonAlign}>
               <button onClick={createNewComponent}>create Tab</button>
             </div>
-          ):
-          (
+          ) : (
             <>
               <div className={buttonAlign}>
                 <button onClick={editModel}>edit model</button>

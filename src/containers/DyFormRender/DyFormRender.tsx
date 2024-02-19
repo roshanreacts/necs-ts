@@ -314,15 +314,8 @@ export function DynamicForm({
           id
         }
       }`;
-
-
       data.code = lz.encodeBase64(lz.compress(data.code))
       console.log("🚀 ~ constonSubmit:SubmitHandler<any>= ~ data.code:", data.code)
-
-      // const yash = lz.decompress(lz.decodeBase64(data.code));
-      // console.log("🚀 ~ constonSubmit:SubmitHandler<any>= ~ yash:", yash)
-      
-      
       const createComponentVariables = { input: data };
       
       console.log("🚀 ~ constonSubmit:SubmitHandler<any>= ~ createComponentVariables:", createComponentVariables)
@@ -330,9 +323,28 @@ export function DynamicForm({
         mutation: createComponentMutation,
         variables: createComponentVariables,
       });
-      // window.location.reload();
+      window.location.reload();
+    }
+    if(apiName ==="editComponent"){
+      data.id = fieldSlug.id;
+      data.code = lz.encodeBase64(lz.compress(data.code))
+      console.log("dataeditcomp",data);
+      const updateComponentQuery = `mutation UpdateComponent($input: updateComponentInput!) {
+                                      updateComponent(input: $input) {
+                                        id
+                                      }
+                                    }`
+      
+      const updateComponentVariable = {input:data}
+      await updateRecord({
+        mutation: updateComponentQuery,
+        variables: updateComponentVariable,
+      });
+      window.location.reload();
+
     }
   };
+
 
   React.useEffect(() => {
     setDynamicFieldOptions(fieldValue.fieldOptions || []);

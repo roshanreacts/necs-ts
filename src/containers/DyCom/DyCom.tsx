@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import _, { map, set } from "lodash";
 import * as Babel from "@babel/standalone";
@@ -6,7 +7,7 @@ type DyComProps = {
   onClick: () => void;
 };
 
-function createComponentFromJSX({
+export function createComponentFromJSX({
   jsxString,
   modules,
 }: {
@@ -15,6 +16,7 @@ function createComponentFromJSX({
 }): React.FC<DyComProps> {
   // Transpile the JSX string to JavaScript using Babel
   const bodyCode = jsxString?.split("// ---Component---")[1].trim();
+  console.log("🚀 ~ bodyCode:", bodyCode)
   const result = Babel.transform(bodyCode, { presets: ["react"] });
   const code = result ? result.code : null;
   const componentFunction = Function.prototype.apply.apply(Function, [
@@ -29,7 +31,7 @@ function createComponentFromJSX({
   return component;
 }
 
-async function loadModules(jsxString: string) {
+export async function loadModules(jsxString: string) {
   // Extract import statements from the transpiled code
   const importStatements =
     jsxString?.match(/import\s+.*?from\s+['"].*?['"]/g) || [];
